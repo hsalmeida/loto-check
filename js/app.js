@@ -17,4 +17,5 @@ var loto = angular.module('loto', ['ui.router'])
                 templateUrl: "views/mega.html",
                 controller: 'MegaCtrl'
             })
-    });
+    })
+    ;
