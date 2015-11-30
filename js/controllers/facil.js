@@ -1,18 +1,11 @@
 loto.controller('FacilCtrl', ['$scope', function($scope){
     $scope.arquivo = "";
-    /*
-    JSZipUtils.getBinaryContent('', function(err, data) {
-        if(err) {
-            throw err; // or handle err
-        }
-
-        var zip = new JSZip(data);
-    });
-    */
-}]).directive('fileread', [ function () {
+    $scope.jogos = "";
+}]).directive('fileread', [function () {
     return {
         scope: {
-            fileread: "="
+            fileread: "=",
+            jogos: "="
         },
         link: function (scope, element, attributes) {
             element.bind("change", function (changeEvent) {
@@ -29,8 +22,14 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                 var extension = zipEntry.name.substring((index + 1), lenName);
                                 if(extension === 'HTM' || extension === 'HTML') {
                                     var el = document.createElement( 'html' );
-                                    el.innerHTML = zipEntry.asText();
+                                    var stringText = zipEntry.asText();
+
+                                    stringText = decodeURI(stringText);
+                                    console.log(stringText.replace(/ /g,''));
+                                    el.innerHTML = stringText;
                                     var table = $(el).find('table');
+                                    $(table).find('*').removeAttr('style').removeAttr('width').removeAttr('height')
+                                        .removeAttr('rowspan').removeAttr('bgcolor');
                                     var trs = $(table).find('tr');
                                     var lenTds = 0;
                                     var jogos = "";
@@ -39,7 +38,9 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                             lenTds++;
                                             jogos += $(this).html() + ", ";
                                         }
-                                    })
+                                    });
+                                    //scope.jogos = $(table);
+                                    $('#tabela').html(table)
                                     console.log(lenTds);
                                     console.log(jogos);
                                 }
