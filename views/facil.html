@@ -12,8 +12,17 @@
             2. faça o upload do arquivo aqui:
             <input type="file" jogos="jogos" fileread="arquivo">
         </div>
-        <div class="list-group-item" id="tabela">
-            {{jogos}}
+    </div>
+    <div class="list-group">
+        <div class="list-group-item active">
+            <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso" class="form-control search-bar" placeholder="Buscar pelo concurso" aria-describedby="basic-addon1">
+        </div>
+        <div class="list-group-item" ng-repeat="jogo in jogos | filter:searchtext | orderBy:concurso  ">
+            <h4>concurso: {{jogo.concurso}} - {{jogo.data}}</h4><br/>
+            {{jogo.bola1}} - {{jogo.bola2}} - {{jogo.bola3}} - {{jogo.bola4}} - {{jogo.bola5}}
+            - {{jogo.bola6}} - {{jogo.bola7}} - {{jogo.bola8}} - {{jogo.bola9}} - {{jogo.bola10}}
+            - {{jogo.bola11}} - {{jogo.bola12}} - {{jogo.bola13}} - {{jogo.bola14}} - {{jogo.bola15}}<br/>
+            ganhadores: {{jogo.ganhadores15}}
         </div>
     </div>
 </div>

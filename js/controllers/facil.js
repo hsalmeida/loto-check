@@ -1,6 +1,7 @@
 loto.controller('FacilCtrl', ['$scope', function($scope){
     $scope.arquivo = "";
-    $scope.jogos = "";
+    $scope.jogos = [];
+    $scope.jogo = {};
 }]).directive('fileread', [function () {
     return {
         scope: {
@@ -9,6 +10,7 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
         },
         link: function (scope, element, attributes) {
             element.bind("change", function (changeEvent) {
+                waitingDialog.show();
                 var reader = new FileReader();
                 var f = changeEvent.target.files[0];
                 reader.onload = function (loadEvent) {
@@ -34,7 +36,9 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                     var achou = false;
                                     var atual = 0;
 
-                                    var jogos = [];
+                                    var jogos = {
+                                        lista: []
+                                    };
 
                                     $(trs).each(function(){
                                         var concurso = $(this).find('td:eq(0)').html();
@@ -82,6 +86,7 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                                 var acumuladorEspecial = $(this).find('td:eq(32)').html();
 
                                                 var jogo = {
+                                                    concurso: concurso,
                                                     data : data,
                                                     bola1: bola1,
                                                     bola2: bola2,
@@ -118,25 +123,19 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                                 jogo.cidades.push(cidade);
                                                 jogo.ufs.push(uf);
 
-                                                jogos.push(jogo);
-
-
+                                                jogos.lista.push(jogo);
 
                                             }
                                         } else {
                                             if(atual !== 0) {
-
                                                 var ufAtual = $(this).find('td:eq(1)').html();
-
-                                                jogos[(jogos.length - 1)].cidades.push(concurso);
-                                                jogos[(jogos.length - 1)].ufs.push(ufAtual);
-
-                                            } else {
-                                                console.log('cabeçalho');
+                                                jogos.lista[(jogos.lista.length - 1)].cidades.push(concurso);
+                                                jogos.lista[(jogos.lista.length - 1)].ufs.push(ufAtual);
                                             }
                                         }
                                     });
-                                    console.log(jogos);
+                                    scope.jogos = jogos.lista;
+                                    waitingDialog.hide();
                                 }
                             }
                         });
