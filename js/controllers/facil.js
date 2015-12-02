@@ -29,12 +29,24 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
 
         waitingDialog.show();
 
-        Math.floor((Math.random() * 15) + 1);
-
         $scope.jogo1 = [];
         $scope.jogo2 = [];
         $scope.jogo3 = [];
 
+        repeticaoSimples($scope.jogo1, 6);
+        repeticaoSimples($scope.jogo2, 6);
+
+        repeticaoSimples($scope.jogo1, 15);
+
+        repeticaoExclusiva($scope.jogo1, $scope.jogo2, 15);
+
+        $scope.jogo1.sort(function(a, b){return a-b});
+        $scope.jogo2.sort(function(a, b){return a-b});
+        $scope.jogo3.sort(function(a, b){return a-b});
+
+        waitingDialog.hide();
+
+        /*
 
         for(var um = 0; um < 6; um++) {
             inicioRecorrente($scope.jogo1);
@@ -103,8 +115,27 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
 
             waitingDialog.hide();
         }, 15000);
+        */
 
     };
+
+    function repeticaoExclusiva(jogo1, jogo2, repeticao) {
+        while(jogo2.length < repeticao) {
+            var rNum = Math.floor((Math.random() * 25) + 1);
+            if($.inArray(rNum, jogo2) === -1 && $.inArray(rNum, jogo1) === -1) {
+                jogo2.push(rNum);
+            }
+        }
+    }
+
+    function repeticaoSimples(jogo, repeticao) {
+        while(jogo.length < repeticao) {
+            var rNum = Math.floor((Math.random() * 25) + 1);
+            if($.inArray(rNum, jogo) === -1) {
+                jogo.push(rNum);
+            }
+        }
+    }
 
     function inicioRecorrente(jogo){
         var numero1 = Math.floor((Math.random() * 25) + 1);
