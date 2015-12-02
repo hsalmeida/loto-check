@@ -1,5 +1,7 @@
 var loto = angular.module('loto', ['ui.router'])
-    .controller('LotoCtrl', ['$scope', function($scope){}])
+    .controller('LotoCtrl', ['$scope', function($scope){
+
+    }])
     .config(function($stateProvider, $urlRouterProvider){
         $urlRouterProvider.otherwise("/");
         $stateProvider

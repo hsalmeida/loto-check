@@ -1,48 +1,66 @@
 <div ng-controller="FacilCtrl">
     <h1 class="page-header">Facil</h1>
-    <div class="list-group">
-        <div class="list-group-item">
-            1. baixe o zip aqui:
-            <a href="http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_lotfac.zip"
-               download="D_lotfac.zip">
-                D_lotfac.zip
-            </a>
-        </div>
-        <div class="list-group-item">
-            2. faça o upload do arquivo aqui:
-            <input type="file" jogos="jogos" fileread="arquivo">
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                1. baixe o zip aqui:
+                <a href="http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_lotfac.zip"
+                   download="D_lotfac.zip">
+                    D_lotfac.zip
+                </a>
+            </div>
+            <div class="list-group-item">
+                2. faça o upload do arquivo aqui:
+                <input type="file" jogos="jogos" fileread="arquivo">
+            </div>
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="simularMenorColisao()">
+                    Gerar Menor Colisão
+                </button>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
+                    </div>
+                    <div class="list-group-item">
+                        <span ng-repeat="j2 in jogo2 track by $index">&nbsp;{{j2}}</span>
+                    </div>
+                    <div class="list-group-item">
+                        <span ng-repeat="j3 in jogo3 track by $index">&nbsp;{{j3}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="list-group list-jogos">
-        <div class="list-group-item active">
-            <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso" class="form-control search-bar" placeholder="Buscar pelo concurso" aria-describedby="basic-addon1">
-        </div>
-        <div class="list-group-item">
-            <label class="control-label">Ordenar por:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <label class="checkbox-inline">
-                <input type="radio" checked name="optradio" ng-click="order('concurso')">Concurso
-                <span class="sortorder" ng-show="predicate === 'concurso'" ng-class="{reverse:reverse}"></span>
-            </label>
-            <label class="checkbox-inline">
-                <input type="radio" name="optradio" ng-click="order('ganhadores15')">Ganhadores 15
-                <span class="sortorder" ng-show="predicate === 'ganhadores15'" ng-class="{reverse:reverse}"></span>
-            </label>
-            <label class="checkbox-inline">
-                <input type="radio" name="optradio" ng-click="order('rateio15')">Rateio 15
-                <span class="sortorder" ng-show="predicate === 'rateio15'" ng-class="{reverse:reverse}"></span>
-            </label>
-        </div>
-        <div class="list-group-item" ng-repeat="jogo in jogos | filter:searchtext | orderBy:predicate:reverse  ">
-            <h4>concurso: {{jogo.concurso}} - {{jogo.data}}</h4><br/>
-            {{jogo.bola1}} - {{jogo.bola2}} - {{jogo.bola3}} - {{jogo.bola4}} - {{jogo.bola5}}
-            - {{jogo.bola6}} - {{jogo.bola7}} - {{jogo.bola8}} - {{jogo.bola9}} - {{jogo.bola10}}
-            - {{jogo.bola11}} - {{jogo.bola12}} - {{jogo.bola13}} - {{jogo.bola14}} - {{jogo.bola15}}<br/>
-            ganhadores de 15: {{jogo.ganhadores15}} - {{jogo.rateio15 | currency}}<br/>
-            ganhadores de 14: {{jogo.ganhadores14}} - {{jogo.rateio14 | currency}}<br/>
-            ganhadores de 13: {{jogo.ganhadores13}} - {{jogo.rateio13 | currency}}<br/>
-            ganhadores de 12: {{jogo.ganhadores12}} - {{jogo.rateio12 | currency}}<br/>
-            ganhadores de 11: {{jogo.ganhadores11}} - {{jogo.rateio11 | currency}}<br/>
-            {{jogo.listaBolas}}
+    <div class="col-md-6">
+        <div class="list-group list-jogos">
+            <div class="list-group-item active">
+                <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso" class="form-control search-bar" placeholder="Buscar pelo concurso" aria-describedby="basic-addon1">
+            </div>
+            <div class="list-group-item">
+                <label class="control-label">Ordenar por:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline">
+                    <input type="radio" checked name="optradio" ng-click="order('concurso')">Concurso
+                    <span class="sortorder" ng-show="predicate === 'concurso'" ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('ganhadores15')">Ganhadores 15
+                    <span class="sortorder" ng-show="predicate === 'ganhadores15'" ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('rateio15')">Rateio 15
+                    <span class="sortorder" ng-show="predicate === 'rateio15'" ng-class="{reverse:reverse}"></span>
+                </label>
+            </div>
+            <div class="list-group-item" ng-repeat="jogo in jogos | filter:searchtext | orderBy:predicate:reverse  ">
+                <h4>concurso: {{jogo.concurso}} - {{jogo.data}}</h4><br/>
+                <label ng-repeat="bola in  jogo.listaBolas">{{bola}}&nbsp;</label>
+                <br/>
+                ganhadores de 15: {{jogo.ganhadores15}} - {{jogo.rateio15 | currency}}<br/>
+                ganhadores de 14: {{jogo.ganhadores14}} - {{jogo.rateio14 | currency}}<br/>
+                ganhadores de 13: {{jogo.ganhadores13}} - {{jogo.rateio13 | currency}}<br/>
+                ganhadores de 12: {{jogo.ganhadores12}} - {{jogo.rateio12 | currency}}<br/>
+                ganhadores de 11: {{jogo.ganhadores11}} - {{jogo.rateio11 | currency}}<br/>
+            </div>
         </div>
     </div>
 </div>

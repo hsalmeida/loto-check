@@ -1,4 +1,4 @@
-loto.controller('FacilCtrl', ['$scope', function($scope){
+loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
     $scope.arquivo = "";
     $scope.jogos = [];
     $scope.jogo = {};
@@ -10,6 +10,96 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
         $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
         $scope.predicate = predicate;
     };
+
+    $scope.jogo1 = [];
+    $scope.jogo2 = [];
+    $scope.jogo3 = [];
+
+    /*gerador de menor impacto*/
+    $scope.simularMenorColisao = function(){
+        /*
+         1. Escolha seis dezenas e marque-as nas duas primeiras apostas;
+         2. Marque outras nove dezenas na primeira aposta;
+         3. Marque nove dezenas na segunda aposta que não constem na primeira;
+         4. Marque na terceira aposta sete dezenas que constem apenas na primeira
+         aposta e mais sete que constem apenas na segunda;
+         5. Marque na terceira aposta a dezena que ainda não consta nem na primeira
+         e nem na segunda aposta (haverá apenas uma).
+         */
+
+        Math.floor((Math.random() * 15) + 1);
+
+        $scope.jogo1 = [];
+        $scope.jogo2 = [];
+        $scope.jogo3 = [];
+
+
+        for(var um = 0; um < 6; um++) {
+            inicioRecorrente($scope.jogo1);
+            inicioRecorrente($scope.jogo2);
+        }
+        for(var dois = 0; dois < 9; dois++) {
+            inicioRecorrente($scope.jogo1);
+        }
+
+        $timeout(function () {
+            console.log('timer1');
+            for(var tres = 0; tres < 9; tres++) {
+                inicioRecorrenteInversoExcluviso($scope.jogo1, $scope.jogo2);
+            }
+            for(var quatro = 0; quatro < 7; quatro++) {
+                inicioRecorrenteInverso($scope.jogo3, $scope.jogo1, $scope.jogo2);
+            }
+        }, 2000);
+
+        $timeout(function () {
+            console.log('timer2');
+            for(var cinco = 0; cinco < 7; cinco++) {
+                inicioRecorrenteInverso($scope.jogo3, $scope.jogo2, $scope.jogo1);
+            }
+            for(var seis = 1; seis <= 25; seis++) {
+                if($.inArray(seis, $scope.jogo1) === -1 && $.inArray(seis, $scope.jogo2) === -1) {
+                    $scope.jogo3.push(seis);
+                    break;
+                }
+            }
+
+            console.log('sorter');
+            $scope.jogo1.sort(function(a, b){return a-b});
+            $scope.jogo2.sort(function(a, b){return a-b});
+            $scope.jogo3.sort(function(a, b){return a-b});
+
+        }, 5000);
+
+    };
+
+    function inicioRecorrente(jogo){
+        var numero1 = Math.floor((Math.random() * 25) + 1);
+        if($.inArray(numero1, jogo) !== -1) {
+            inicioRecorrente(jogo);
+        } else {
+            jogo.push(numero1);
+        }
+    }
+
+    function inicioRecorrenteInverso(j0, j1, j2){
+        var numero1 = Math.floor((Math.random() * 25) + 1);
+        if($.inArray(numero1, j0) === -1 && $.inArray(numero1, j1) !== -1 && $.inArray(numero1, j2) === -1) {
+            j0.push(numero1);
+        } else {
+            inicioRecorrenteInverso(j0, j1, j2);
+        }
+    }
+
+    function inicioRecorrenteInversoExcluviso(jogo, jogo2){
+        var numero1 = Math.floor((Math.random() * 25) + 1);
+        if($.inArray(numero1, jogo) !== -1) {
+            inicioRecorrenteInversoExcluviso(jogo, jogo2);
+        } else {
+            jogo2.push(numero1);
+        }
+    }
+
 
 }]).directive('fileread', [function () {
     return {
@@ -153,7 +243,7 @@ loto.controller('FacilCtrl', ['$scope', function($scope){
                                         }
                                     });
                                     scope.jogos = jogos.lista;
-                                    console.log(JSON.stringify(jogos));
+
                                     waitingDialog.hide();
                                 }
                             }
