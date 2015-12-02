@@ -27,6 +27,8 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
          e nem na segunda aposta (haverá apenas uma).
          */
 
+        waitingDialog.show();
+
         Math.floor((Math.random() * 15) + 1);
 
         $scope.jogo1 = [];
@@ -44,32 +46,63 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
 
         $timeout(function () {
             console.log('timer1');
-            for(var tres = 0; tres < 9; tres++) {
-                inicioRecorrenteInversoExcluviso($scope.jogo1, $scope.jogo2);
-            }
-            for(var quatro = 0; quatro < 7; quatro++) {
-                inicioRecorrenteInverso($scope.jogo3, $scope.jogo1, $scope.jogo2);
+            try {
+                for (var tres = 0; tres < 9; tres++) {
+                    inicioRecorrenteInversoExcluviso($scope.jogo1, $scope.jogo2);
+                }
+            } catch(err) {
+                console.log('erro no timer 1');
             }
         }, 2000);
 
+
         $timeout(function () {
             console.log('timer2');
-            for(var cinco = 0; cinco < 7; cinco++) {
-                inicioRecorrenteInverso($scope.jogo3, $scope.jogo2, $scope.jogo1);
-            }
-            for(var seis = 1; seis <= 25; seis++) {
-                if($.inArray(seis, $scope.jogo1) === -1 && $.inArray(seis, $scope.jogo2) === -1) {
-                    $scope.jogo3.push(seis);
-                    break;
+            try {
+                for(var quatro = 0; quatro < 7; quatro++) {
+                    inicioRecorrenteInverso($scope.jogo3, $scope.jogo1, $scope.jogo2);
                 }
+            }catch(err) {
+                console.log('erro no timer 2');
             }
+        }, 5000);
 
+        $timeout(function () {
+            console.log('timer3');
+            try {
+                for (var cinco = 0; cinco < 7; cinco++) {
+                    inicioRecorrenteInverso($scope.jogo3, $scope.jogo2, $scope.jogo1);
+                }
+            }catch(err) {
+                console.log('erro no timer 3');
+            }
+        }, 10000);
+
+        $timeout(function () {
+            console.log('timer4');
+            try {
+                for (var seis = 1; seis <= 25; seis++) {
+                    if ($.inArray(seis, $scope.jogo1) === -1 && $.inArray(seis, $scope.jogo2) === -1) {
+                        $scope.jogo3.push(seis);
+                        break;
+                    }
+                }
+                while($scope.jogo3.length < 15) {
+                    var rNum = Math.floor((Math.random() * 25) + 1);
+                    if($.inArray(rNum, $scope.jogo3) === -1) {
+                        $scope.jogo3.push(rNum);
+                    }
+                }
+            }catch(err) {
+                console.log('erro no timer 4');
+            }
             console.log('sorter');
             $scope.jogo1.sort(function(a, b){return a-b});
             $scope.jogo2.sort(function(a, b){return a-b});
             $scope.jogo3.sort(function(a, b){return a-b});
 
-        }, 5000);
+            waitingDialog.hide();
+        }, 15000);
 
     };
 
@@ -93,7 +126,7 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
 
     function inicioRecorrenteInversoExcluviso(jogo, jogo2){
         var numero1 = Math.floor((Math.random() * 25) + 1);
-        if($.inArray(numero1, jogo) !== -1) {
+        if($.inArray(numero1, jogo2) !== -1 && $.inArray(numero1, jogo) !== -1) {
             inicioRecorrenteInversoExcluviso(jogo, jogo2);
         } else {
             jogo2.push(numero1);
@@ -118,9 +151,9 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                         var zip = new JSZip(scope.fileread);
                         $.each(zip.files, function (index, zipEntry) {
                             if(zipEntry.name.lastIndexOf('.') > -1) {
-                                var index = zipEntry.name.lastIndexOf('.');
+                                var indice = zipEntry.name.lastIndexOf('.');
                                 var lenName = zipEntry.name.length;
-                                var extension = zipEntry.name.substring((index + 1), lenName);
+                                var extension = zipEntry.name.substring((indice + 1), lenName);
                                 if(extension === 'HTM' || extension === 'HTML') {
                                     var el = document.createElement( 'html' );
                                     var stringText = zipEntry.asText();
@@ -130,7 +163,6 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                     $(table).find('*').removeAttr('style').removeAttr('width').removeAttr('height')
                                         .removeAttr('rowspan').removeAttr('bgcolor');
                                     var trs = $(table).find('tr');
-                                    var lenTds = 0;
 
                                     var achou = false;
                                     var atual = 0;
