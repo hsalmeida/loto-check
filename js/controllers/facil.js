@@ -34,11 +34,34 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
         $scope.jogo3 = [];
 
         repeticaoSimples($scope.jogo1, 6);
-        repeticaoSimples($scope.jogo2, 6);
+        repeticaoExclusiva($scope.jogo1, $scope.jogo2, 6);
 
         repeticaoSimples($scope.jogo1, 15);
 
-        repeticaoExclusiva($scope.jogo1, $scope.jogo2, 15);
+        var naoEstaNoJogo1 = naoExisteNaLista($scope.jogo1);
+        var numero = Math.floor((Math.random() * 10) + 1);
+        naoEstaNoJogo1.splice(numero, 1);
+
+        repeticaoExclusiva2(naoEstaNoJogo1, $scope.jogo2);
+
+        repeticaoSimples($scope.jogo2, 15);
+
+        repeticaoExclusiva3($scope.jogo1, $scope.jogo2, $scope.jogo3, 7);
+        repeticaoExclusiva3($scope.jogo2, $scope.jogo1, $scope.jogo3, 14);
+
+        var naoEstaNenhumJogo = naoExisteNenhumaLista($scope.jogo1, $scope.jogo2);
+
+        console.log(naoEstaNenhumJogo);
+
+        if(naoEstaNenhumJogo.length > 0) {
+            for(var index3 = 0;index3 < naoEstaNenhumJogo.length; index3++) {
+                if($scope.jogo3.length === 15) {
+                    break;
+                }
+                $scope.jogo3.push(naoEstaNenhumJogo[index3]);
+            }
+        }
+        repeticaoSimples($scope.jogo3, 15);
 
         $scope.jogo1.sort(function(a, b){return a-b});
         $scope.jogo2.sort(function(a, b){return a-b});
@@ -46,84 +69,56 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
 
         waitingDialog.hide();
 
-        /*
-
-        for(var um = 0; um < 6; um++) {
-            inicioRecorrente($scope.jogo1);
-            inicioRecorrente($scope.jogo2);
-        }
-        for(var dois = 0; dois < 9; dois++) {
-            inicioRecorrente($scope.jogo1);
-        }
-
-        $timeout(function () {
-            console.log('timer1');
-            try {
-                for (var tres = 0; tres < 9; tres++) {
-                    inicioRecorrenteInversoExcluviso($scope.jogo1, $scope.jogo2);
-                }
-            } catch(err) {
-                console.log('erro no timer 1');
-            }
-        }, 2000);
-
-
-        $timeout(function () {
-            console.log('timer2');
-            try {
-                for(var quatro = 0; quatro < 7; quatro++) {
-                    inicioRecorrenteInverso($scope.jogo3, $scope.jogo1, $scope.jogo2);
-                }
-            }catch(err) {
-                console.log('erro no timer 2');
-            }
-        }, 5000);
-
-        $timeout(function () {
-            console.log('timer3');
-            try {
-                for (var cinco = 0; cinco < 7; cinco++) {
-                    inicioRecorrenteInverso($scope.jogo3, $scope.jogo2, $scope.jogo1);
-                }
-            }catch(err) {
-                console.log('erro no timer 3');
-            }
-        }, 10000);
-
-        $timeout(function () {
-            console.log('timer4');
-            try {
-                for (var seis = 1; seis <= 25; seis++) {
-                    if ($.inArray(seis, $scope.jogo1) === -1 && $.inArray(seis, $scope.jogo2) === -1) {
-                        $scope.jogo3.push(seis);
-                        break;
-                    }
-                }
-                while($scope.jogo3.length < 15) {
-                    var rNum = Math.floor((Math.random() * 25) + 1);
-                    if($.inArray(rNum, $scope.jogo3) === -1) {
-                        $scope.jogo3.push(rNum);
-                    }
-                }
-            }catch(err) {
-                console.log('erro no timer 4');
-            }
-            console.log('sorter');
-            $scope.jogo1.sort(function(a, b){return a-b});
-            $scope.jogo2.sort(function(a, b){return a-b});
-            $scope.jogo3.sort(function(a, b){return a-b});
-
-            waitingDialog.hide();
-        }, 15000);
-        */
-
     };
+
+    function naoExisteNenhumaLista(jogo1, jogo2) {
+        var naoEstaNenhumJogo = [];
+        for(var indice = 1; indice < 25; indice++) {
+            if($.inArray(indice, jogo1) === -1 && $.inArray(indice, jogo2) === -1) {
+                naoEstaNenhumJogo.push(indice);
+            }
+        }
+        return naoEstaNenhumJogo;
+    }
+
+    function naoExisteNaLista(jogo1) {
+        var naoEstaNoJogo1 = [];
+        for(var indice = 1; indice < 25; indice++) {
+            if($.inArray(indice, jogo1) === -1) {
+                naoEstaNoJogo1.push(indice);
+            }
+        }
+        return naoEstaNoJogo1;
+    }
+
+    function repeticaoExclusiva3(jogo1, jogo2, jogo3, repeticao) {
+
+        for(var indice = 0;indice < jogo1.length; indice++) {
+            if($.inArray(jogo1[indice], jogo2) === -1) {
+                jogo3.push(jogo1[indice]);
+            }
+            if(jogo3.length === repeticao) {
+                break;
+            }
+        }
+    }
+
+    function repeticaoExclusiva2(jogo, jogo2) {
+        for(var indice = 0;indice < jogo.length; indice++) {
+            if($.inArray(jogo[indice], jogo2) === -1) {
+                jogo2.push(jogo[indice]);
+            }
+        }
+    }
 
     function repeticaoExclusiva(jogo1, jogo2, repeticao) {
         while(jogo2.length < repeticao) {
-            var rNum = Math.floor((Math.random() * 25) + 1);
-            if($.inArray(rNum, jogo2) === -1 && $.inArray(rNum, jogo1) === -1) {
-                jogo2.push(rNum);
+            console.log(jogo2.length);
+            var numero = Math.floor((Math.random() * 25) + 1);
+            if($.inArray(numero, jogo1) === -1) {
+                if($.inArray(numero, jogo2) === -1) {
+                    jogo2.push(numero);
+                }
             }
         }
     }
@@ -134,33 +129,6 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
             if($.inArray(rNum, jogo) === -1) {
                 jogo.push(rNum);
             }
-        }
-    }
-
-    function inicioRecorrente(jogo){
-        var numero1 = Math.floor((Math.random() * 25) + 1);
-        if($.inArray(numero1, jogo) !== -1) {
-            inicioRecorrente(jogo);
-        } else {
-            jogo.push(numero1);
-        }
-    }
-
-    function inicioRecorrenteInverso(j0, j1, j2){
-        var numero1 = Math.floor((Math.random() * 25) + 1);
-        if($.inArray(numero1, j0) === -1 && $.inArray(numero1, j1) !== -1 && $.inArray(numero1, j2) === -1) {
-            j0.push(numero1);
-        } else {
-            inicioRecorrenteInverso(j0, j1, j2);
-        }
-    }
-
-    function inicioRecorrenteInversoExcluviso(jogo, jogo2){
-        var numero1 = Math.floor((Math.random() * 25) + 1);
-        if($.inArray(numero1, jogo2) !== -1 && $.inArray(numero1, jogo) !== -1) {
-            inicioRecorrenteInversoExcluviso(jogo, jogo2);
-        } else {
-            jogo2.push(numero1);
         }
     }
 
