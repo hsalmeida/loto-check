@@ -3,6 +3,8 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
     $scope.jogos = [];
     $scope.jogo = {};
 
+    $scope.dezenas = 15;
+
     $scope.predicate = 'concurso';
     $scope.reverse = false;
 
@@ -33,35 +35,35 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
         $scope.jogo2 = [];
         $scope.jogo3 = [];
 
-        repeticaoSimples($scope.jogo1, 6);
-        repeticaoExclusiva($scope.jogo1, $scope.jogo2, 6);
+        var fator = ($scope.dezenas - 15);
 
-        repeticaoSimples($scope.jogo1, 15);
+        repeticaoSimples($scope.jogo1, (6 + fator));
+        repeticaoExclusiva($scope.jogo1, $scope.jogo2, (6 + fator));
+
+        repeticaoSimples($scope.jogo1, (15 + fator));
 
         var naoEstaNoJogo1 = naoExisteNaLista($scope.jogo1);
-        var numero = Math.floor((Math.random() * 10) + 1);
+        var numero = Math.floor((Math.random() * (10 + fator)) + 1);
         naoEstaNoJogo1.splice(numero, 1);
 
         repeticaoExclusiva2(naoEstaNoJogo1, $scope.jogo2);
 
-        repeticaoSimples($scope.jogo2, 15);
+        repeticaoSimples($scope.jogo2, (15 + fator));
 
-        repeticaoExclusiva3($scope.jogo1, $scope.jogo2, $scope.jogo3, 7);
-        repeticaoExclusiva3($scope.jogo2, $scope.jogo1, $scope.jogo3, 14);
+        repeticaoExclusiva3($scope.jogo1, $scope.jogo2, $scope.jogo3, (7 + fator));
+        repeticaoExclusiva3($scope.jogo2, $scope.jogo1, $scope.jogo3, (14 + fator));
 
         var naoEstaNenhumJogo = naoExisteNenhumaLista($scope.jogo1, $scope.jogo2);
 
-        console.log(naoEstaNenhumJogo);
-
         if(naoEstaNenhumJogo.length > 0) {
             for(var index3 = 0;index3 < naoEstaNenhumJogo.length; index3++) {
-                if($scope.jogo3.length === 15) {
+                if($scope.jogo3.length === (15 + fator)) {
                     break;
                 }
                 $scope.jogo3.push(naoEstaNenhumJogo[index3]);
             }
         }
-        repeticaoSimples($scope.jogo3, 15);
+        repeticaoSimples($scope.jogo3, (15 + fator));
 
         $scope.jogo1.sort(function(a, b){return a-b});
         $scope.jogo2.sort(function(a, b){return a-b});
@@ -183,21 +185,21 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                                 atual = concurso;
 
                                                 var data = $(this).find('td:eq(1)').html();
-                                                var bola1 = $(this).find('td:eq(2)').html();
-                                                var bola2 = $(this).find('td:eq(3)').html();
-                                                var bola3 = $(this).find('td:eq(4)').html();
-                                                var bola4 = $(this).find('td:eq(5)').html();
-                                                var bola5 = $(this).find('td:eq(6)').html();
-                                                var bola6 = $(this).find('td:eq(7)').html();
-                                                var bola7 = $(this).find('td:eq(8)').html();
-                                                var bola8 = $(this).find('td:eq(9)').html();
-                                                var bola9 = $(this).find('td:eq(10)').html();
-                                                var bola10 = $(this).find('td:eq(11)').html();
-                                                var bola11 = $(this).find('td:eq(12)').html();
-                                                var bola12 = $(this).find('td:eq(13)').html();
-                                                var bola13 = $(this).find('td:eq(14)').html();
-                                                var bola14 = $(this).find('td:eq(15)').html();
-                                                var bola15 = $(this).find('td:eq(16)').html();
+                                                var bola1 = Number($(this).find('td:eq(2)').html());
+                                                var bola2 = Number($(this).find('td:eq(3)').html());
+                                                var bola3 = Number($(this).find('td:eq(4)').html());
+                                                var bola4 = Number($(this).find('td:eq(5)').html());
+                                                var bola5 = Number($(this).find('td:eq(6)').html());
+                                                var bola6 = Number($(this).find('td:eq(7)').html());
+                                                var bola7 = Number($(this).find('td:eq(8)').html());
+                                                var bola8 = Number($(this).find('td:eq(9)').html());
+                                                var bola9 = Number($(this).find('td:eq(10)').html());
+                                                var bola10 = Number($(this).find('td:eq(11)').html());
+                                                var bola11 = Number($(this).find('td:eq(12)').html());
+                                                var bola12 = Number($(this).find('td:eq(13)').html());
+                                                var bola13 = Number($(this).find('td:eq(14)').html());
+                                                var bola14 = Number($(this).find('td:eq(15)').html());
+                                                var bola15 = Number($(this).find('td:eq(16)').html());
                                                 var listaBolas = [];
                                                 listaBolas.push(Number(bola1), Number(bola2), Number(bola3),
                                                     Number(bola4), Number(bola5),Number(bola6), Number(bola7),
@@ -242,7 +244,7 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                                     bola14: bola14,
                                                     bola15: bola15,
                                                     listaBolas : listaBolas,
-                                                    arrecadacaoTotal: arrecadacaoTotal,
+                                                    arrecadacaoTotal: Number(arrecadacaoTotal.replace(regdot,'').replace(',','.')),
                                                     ganhadores15: Number(ganhadores15),
                                                     cidades: [],
                                                     ufs: [],
@@ -259,8 +261,8 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                                     estimativa: Number(estimativa.replace(regdot,'').replace(',','.')),
                                                     acumuladorEspecial: Number(acumuladorEspecial.replace(regdot,'').replace(',','.'))
                                                 };
-                                                jogo.cidades.push(cidade);
-                                                jogo.ufs.push(uf);
+                                                jogo.cidades.push((cidade.trim()));
+                                                jogo.ufs.push((uf.trim()));
 
                                                 jogos.lista.push(jogo);
 
@@ -274,7 +276,7 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                         }
                                     });
                                     scope.jogos = jogos.lista;
-
+                                    console.log(JSON.stringify(scope.jogos));
                                     waitingDialog.hide();
                                 }
                             }
