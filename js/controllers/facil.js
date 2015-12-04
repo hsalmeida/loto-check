@@ -13,6 +13,24 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     $scope.predicate = 'concurso';
     $scope.reverse = false;
 
+    $scope.ganhariaJogo1 = 0;
+    $scope.ganhariaJogo1_11 = 0;
+    $scope.ganhariaJogo1_12 = 0;
+    $scope.ganhariaJogo1_13 = 0;
+    $scope.ganhariaJogo1_14 = 0;
+
+    $scope.ganhariaJogo2 = 0;
+    $scope.ganhariaJogo2_11 = 0;
+    $scope.ganhariaJogo2_12 = 0;
+    $scope.ganhariaJogo2_13 = 0;
+    $scope.ganhariaJogo2_14 = 0;
+
+    $scope.ganhariaJogo3 = 0;
+    $scope.ganhariaJogo3_11 = 0;
+    $scope.ganhariaJogo3_12 = 0;
+    $scope.ganhariaJogo3_13 = 0;
+    $scope.ganhariaJogo3_14 = 0;
+
     $scope.order = function(predicate) {
         $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
         $scope.predicate = predicate;
@@ -47,16 +65,9 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         waitingDialog.show();
         Facil.all().then(function(jogos){
             $scope.jogos = jogos;
+            $scope.simularMenorColisao();
             waitingDialog.hide();
         });
-        /*
-        var query = {
-
-        };
-        Facil.query(query).then(function(jogos){
-
-        });
-        */
     };
 
     /* import */
@@ -131,6 +142,93 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         $scope.jogo2.sort(function(a, b){return a-b});
         $scope.jogo3.sort(function(a, b){return a-b});
 
+        $scope.ganhariaJogo1 = 0;
+        $scope.ganhariaJogo1_11 = 0;
+        $scope.ganhariaJogo1_12 = 0;
+        $scope.ganhariaJogo1_13 = 0;
+        $scope.ganhariaJogo1_14 = 0;
+
+        $scope.ganhariaJogo2 = 0;
+        $scope.ganhariaJogo2_11 = 0;
+        $scope.ganhariaJogo2_12 = 0;
+        $scope.ganhariaJogo2_13 = 0;
+        $scope.ganhariaJogo2_14 = 0;
+
+        $scope.ganhariaJogo3 = 0;
+        $scope.ganhariaJogo3_11 = 0;
+        $scope.ganhariaJogo3_12 = 0;
+        $scope.ganhariaJogo3_13 = 0;
+        $scope.ganhariaJogo3_14 = 0;
+
+        if($scope.jogos.length > 0) {
+            /* verificar se ganharia em algum jogo */
+            $($scope.jogos).each(function(){
+                var quantidade1 = 0;
+                var quantidade2 = 0;
+                var quantidade3 = 0;
+                $(this.listaBolas).each(function(){
+                    if($.inArray(Number(this), $scope.jogo1) !== -1) {
+                        quantidade1++;
+                    }
+                });
+                $(this.listaBolas).each(function(){
+                    if($.inArray(Number(this), $scope.jogo2) !== -1) {
+                        quantidade2++;
+                    }
+                });
+                $(this.listaBolas).each(function(){
+                    if($.inArray(Number(this), $scope.jogo3) !== -1) {
+                        quantidade3++;
+                    }
+                });
+                if(quantidade1 === 11){
+                    $scope.ganhariaJogo1_11++;
+                }
+                if(quantidade1 === 12){
+                    $scope.ganhariaJogo1_12++;
+                }
+                if(quantidade1 === 13){
+                    $scope.ganhariaJogo1_13++;
+                }
+                if(quantidade1 === 14){
+                    $scope.ganhariaJogo1_14++;
+                }
+                if(quantidade2 === 11){
+                    $scope.ganhariaJogo2_11++;
+                }
+                if(quantidade2 === 12){
+                    $scope.ganhariaJogo2_12++;
+                }
+                if(quantidade2 === 13){
+                    $scope.ganhariaJogo2_13++;
+                }
+                if(quantidade2 === 14){
+                    $scope.ganhariaJogo2_14++;
+                }
+                if(quantidade3 === 11){
+                    $scope.ganhariaJogo3_11++;
+                }
+                if(quantidade3 === 12){
+                    $scope.ganhariaJogo3_12++;
+                }
+                if(quantidade3 === 13){
+                    $scope.ganhariaJogo3_13++;
+                }
+                if(quantidade3 === 14){
+                    $scope.ganhariaJogo3_14++;
+                }
+                if(quantidade1 >= 15) {
+                    $scope.ganhariaJogo1++;
+                }
+                if(quantidade2 >= 15) {
+                    $scope.ganhariaJogo2++;
+                }
+                if(quantidade3 >= 15) {
+                    $scope.ganhariaJogo3++;
+                }
+            });
+        }
+
         waitingDialog.hide();
 
     };
@@ -177,7 +275,6 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
     function repeticaoExclusiva(jogo1, jogo2, repeticao) {
         while(jogo2.length < repeticao) {
-            console.log(jogo2.length);
             var numero = Math.floor((Math.random() * 25) + 1);
             if($.inArray(numero, jogo1) === -1) {
                 if($.inArray(numero, jogo2) === -1) {

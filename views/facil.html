@@ -21,15 +21,42 @@
                 <div class="list-group">
                     <div class="list-group-item">
                         <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
-                        - numeros: {{jogo1.length}}
+                        <br />
+                        ganharia: {{ganhariaJogo1}} jogos de 15
+                        <br />
+                        ganharia: {{ganhariaJogo1_14}} jogos de 14
+                        <br />
+                        ganharia: {{ganhariaJogo1_13}} jogos de 13
+                        <br />
+                        ganharia: {{ganhariaJogo1_12}} jogos de 12
+                        <br />
+                        ganharia: {{ganhariaJogo1_11}} jogos de 11
                     </div>
                     <div class="list-group-item">
                         <span ng-repeat="j2 in jogo2 track by $index">&nbsp;{{j2}}</span>
-                        - numeros: {{jogo2.length}}
+                        <br />
+                        ganharia: {{ganhariaJogo2}} jogos de 15
+                        <br />
+                        ganharia: {{ganhariaJogo2_14}} jogos de 14
+                        <br />
+                        ganharia: {{ganhariaJogo2_13}} jogos de 13
+                        <br />
+                        ganharia: {{ganhariaJogo2_12}} jogos de 12
+                        <br />
+                        ganharia: {{ganhariaJogo2_11}} jogos de 11
                     </div>
                     <div class="list-group-item">
                         <span ng-repeat="j3 in jogo3 track by $index">&nbsp;{{j3}}</span>
-                         - numeros: {{jogo3.length}}
+                        <br />
+                        ganharia: {{ganhariaJogo3}} jogos de 15
+                        <br />
+                        ganharia: {{ganhariaJogo3_14}} jogos de 14
+                        <br />
+                        ganharia: {{ganhariaJogo3_13}} jogos de 13
+                        <br />
+                        ganharia: {{ganhariaJogo3_12}} jogos de 12
+                        <br />
+                        ganharia: {{ganhariaJogo3_11}} jogos de 11
                     </div>
                 </div>
             </div>
@@ -48,18 +75,7 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td></td>
-                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
-            </tr>
-            <tr ng-repeat="numero in numeros">
-                <td>{{numero}}</td>
-                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}</td>
-            </tr>
-            </tbody>
-        </table>
+
 
     </div>
     <div class="col-md-6">
@@ -103,5 +119,17 @@
                 ganhadores de 11: {{jogo.ganhadores11}} - {{jogo.rateio11 | currency}}<br/>
             </div>
         </div>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td></td>
+                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+            </tr>
+            <tr ng-repeat="numero in numeros">
+                <td>{{numero}}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
