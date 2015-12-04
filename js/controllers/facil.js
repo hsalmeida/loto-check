@@ -1,8 +1,13 @@
-loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
+loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     $scope.arquivo = "";
     $scope.jogos = [];
     $scope.jogo = {};
+    $scope.iszip = false;
 
+    $scope.numeros = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
+    $scope.totalBolas = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+
+    $scope.ganhadora = true;
     $scope.dezenas = 15;
 
     $scope.predicate = 'concurso';
@@ -16,6 +21,52 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
     $scope.jogo1 = [];
     $scope.jogo2 = [];
     $scope.jogo3 = [];
+
+    $scope.filterBola = function(bola, numero, ganhador){
+        return function(item){
+            if(ganhador) {
+                return item['bola' + bola] === numero && ganhador > 0;
+            } else {
+                return item['bola' + bola] === numero;
+            }
+        }
+    };
+
+    $scope.getJogos = function(){
+        waitingDialog.show();
+        Facil.all().then(function(jogos){
+            $scope.jogos = jogos;
+            waitingDialog.hide();
+        });
+        /*
+        var query = {
+
+        };
+        Facil.query(query).then(function(jogos){
+
+        });
+        */
+    };
+
+    /* import */
+    $scope.import = function(){
+        $.getJSON('js/assets/jogo.json', function(data){
+            var lista = data.lista;
+            $(lista).each(function(){
+                var facil = new Facil();
+                angular.merge(facil, this);
+                try {
+                    facil.$save().then(function () {
+                        console.log('salvo');
+                    });
+                } catch (err) {
+                    console.log(err);
+                    return false;
+                }
+            });
+        });
+    };
+    /* import */
 
     /*gerador de menor impacto*/
     $scope.simularMenorColisao = function(){
@@ -139,7 +190,8 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
     return {
         scope: {
             fileread: "=",
-            jogos: "="
+            jogos: "=",
+            iszip: "="
         },
         link: function (scope, element, attributes) {
             element.bind("change", function (changeEvent) {
@@ -276,7 +328,9 @@ loto.controller('FacilCtrl', ['$scope', '$timeout', function($scope, $timeout){
                                         }
                                     });
                                     scope.jogos = jogos.lista;
-                                    console.log(JSON.stringify(scope.jogos));
+                                    if(scope.jogos.length > 0) {
+                                        scope.iszip = true;
+                                    }
                                     waitingDialog.hide();
                                 }
                             }

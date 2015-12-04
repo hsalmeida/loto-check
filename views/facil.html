@@ -11,7 +11,7 @@
             </div>
             <div class="list-group-item">
                 2. faça o upload do arquivo aqui:
-                <input type="file" jogos="jogos" fileread="arquivo">
+                <input type="file" jogos="jogos" iszip="iszip" fileread="arquivo">
             </div>
             <div class="list-group-item">
                 <button type="button" class="btn btn-lg btn-primary" ng-click="simularMenorColisao()">
@@ -34,8 +34,31 @@
                 </div>
             </div>
         </div>
+        <input id="ganhadora" type="checkbox" ng-model="ganhadora" ng-click="filterBola()"><label for="ganhadora">Somente ganhadoras</label>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                </tr>
+                <tr ng-repeat="numero in numeros">
+                    <td>{{numero}}</td>
+                    <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="getJogos()">
+                    Buscar Jogos Salvos
+                </button>
+                <button type="button" ng-show="iszip" class="btn btn-lg btn-primary" ng-click="updateJogo()">
+                    Atualizar do Zip
+                </button>
+            </div>
+        </div>
         <div class="list-group list-jogos">
             <div class="list-group-item active">
                 <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso" class="form-control search-bar" placeholder="Buscar pelo concurso" aria-describedby="basic-addon1">

@@ -1,4 +1,5 @@
-var loto = angular.module('loto', ['ui.router'])
+var loto = angular.module('loto', ['ui.router', 'mongolabResourceHttp'])
+    .constant('MONGOLAB_CONFIG',{API_KEY:'YXgR-q92vuVCKlSm-ji3nplDTE7rHIQh', DB_NAME:'ltdb'})
     .controller('LotoCtrl', ['$scope', function($scope){
 
     }])
