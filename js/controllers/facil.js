@@ -25,9 +25,20 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     $scope.filterBola = function(bola, numero, ganhador){
         return function(item){
             if(ganhador) {
-                return item['bola' + bola] === numero && ganhador > 0;
+                return item['bola' + bola] === numero && item['ganhadores15'] > 0;
             } else {
                 return item['bola' + bola] === numero;
+            }
+        }
+    };
+
+
+    $scope.filterBolaOrdenada = function(bola, numero, ganhador){
+        return function(item){
+            if(ganhador) {
+                return item['listaBolas'][(bola - 1)] === numero && item['ganhadores15'] > 0;
+            } else {
+                return item['listaBolas'][(bola - 1)] === numero;
             }
         }
     };

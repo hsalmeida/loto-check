@@ -1,5 +1,5 @@
 <div ng-controller="FacilCtrl">
-    <h1 class="page-header">Facil</h1>
+    <h3 class="page-header">Facil</h3>
     <div class="col-md-6">
         <div class="list-group">
             <div class="list-group-item">
@@ -47,6 +47,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td></td>
+                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+            </tr>
+            <tr ng-repeat="numero in numeros">
+                <td>{{numero}}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}</td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
     <div class="col-md-6">
         <div class="list-group">
