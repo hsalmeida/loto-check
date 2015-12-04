@@ -63,7 +63,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
     $scope.getJogos = function(){
         waitingDialog.show();
-        Facil.all().then(function(jogos){
+        Facil.all({"limit" : 2000}).then(function(jogos){
             $scope.jogos = jogos;
             $scope.simularMenorColisao();
             waitingDialog.hide();
@@ -89,6 +89,36 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         });
     };
     /* import */
+
+    /* update jogos */
+    $scope.updateJogo = function(){
+        waitingDialog.show();
+        var q = {
+            "sort" : {
+                "concurso" : -1
+            },
+            "limit" : 1
+        };
+        Facil.query(null, q).then(function(ultimafacil){
+            $($scope.jogos).each(function(){
+                if (this.concurso > ultimafacil[0].concurso) {
+                    var facil = new Facil();
+                    angular.merge(facil, this);
+                    try {
+                        facil.$save().then(function () {
+                            console.log('salvo');
+                        });
+                    } catch (err) {
+                        console.log(err);
+                        return false;
+                    }
+                }
+            });
+            $scope.iszip = false;
+            waitingDialog.hide();
+        });
+    };
+    /* update jogos */
 
     /*gerador de menor impacto*/
     $scope.simularMenorColisao = function(){
@@ -324,10 +354,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                     $(table).find('*').removeAttr('style').removeAttr('width').removeAttr('height')
                                         .removeAttr('rowspan').removeAttr('bgcolor');
                                     var trs = $(table).find('tr');
-
-                                    var achou = false;
                                     var atual = 0;
-
                                     var jogos = {
                                         lista: []
                                     };
@@ -337,7 +364,6 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                     $(trs).each(function(){
                                         var concurso = $(this).find('td:eq(0)').html();
                                         if($.isNumeric(concurso)) {
-                                            achou = true;
                                             if(concurso === atual) {
 
                                             } else {

@@ -11,7 +11,7 @@ body {
 }
 
 .list-jogos {
-    max-height: 500px;
+    max-height: 667px;
     overflow: auto;
 }
 

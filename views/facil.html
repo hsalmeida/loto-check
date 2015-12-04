@@ -1,5 +1,9 @@
 <div ng-controller="FacilCtrl">
-    <h3 class="page-header">Facil</h3>
+    <ol class="breadcrumb">
+        <li><a ui-sref="home">Home</a></li>
+        <li class="active">Fácil</li>
+    </ol>
+    <h3 class="page-header">Fácil</h3>
     <div class="col-md-6">
         <div class="list-group">
             <div class="list-group-item">
@@ -61,6 +65,8 @@
                 </div>
             </div>
         </div>
+        <label>Numeros por posição ordem de sorteio</label>
+        <br />
         <input id="ganhadora" type="checkbox" ng-model="ganhadora" ng-click="filterBola()"><label for="ganhadora">Somente ganhadoras</label>
         <table class="table table-bordered">
             <tbody>
@@ -70,7 +76,7 @@
                 </tr>
                 <tr ng-repeat="numero in numeros">
                     <td>{{numero}}</td>
-                    <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}</td>
+                    <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 50, 'warning' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 60}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}</td>
                 </tr>
             </tbody>
         </table>
@@ -119,6 +125,7 @@
                 ganhadores de 11: {{jogo.ganhadores11}} - {{jogo.rateio11 | currency}}<br/>
             </div>
         </div>
+        <label>Numeros por posição ordenados</label>
         <table class="table table-bordered">
             <tbody>
             <tr>
@@ -127,7 +134,12 @@
             </tr>
             <tr ng-repeat="numero in numeros">
                 <td>{{numero}}</td>
-                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length > 50}" ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 50,
+                'warning' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 99,
+                'danger' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 199,
+                'info' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 299}"
+                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}
+                </td>
             </tr>
             </tbody>
         </table>

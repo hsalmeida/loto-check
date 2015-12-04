@@ -1,3 +1,73 @@
 <div ng-controller="MegaCtrl">
+    <ol class="breadcrumb">
+        <li><a ui-sref="home">Home</a></li>
+        <li class="active">Mega</li>
+    </ol>
     <h3 class="page-header">Mega</h3>
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                1. baixe o zip aqui:
+                <a href="http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip"
+                   download="D_megase.zip">
+                    D_megase.zip
+                </a>
+            </div>
+            <div class="list-group-item">
+                2. faça o upload do arquivo aqui:
+                <input type="file" jogos="jogos" iszip="iszip" filereadmega="arquivo">
+            </div>
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="simularMenorColisao()">
+                    Gerar Menor Colisão
+                </button>
+                Dezenas: <input type="number" ng-model="dezenas" placeholder="6" step="1" min="6" max="8">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="getJogos()">
+                    Buscar Jogos Salvos
+                </button>
+                <button type="button" ng-show="iszip" class="btn btn-lg btn-primary" ng-click="updateJogo()">
+                    Atualizar do Zip
+                </button>
+            </div>
+        </div>
+        <div class="list-group list-jogos">
+            <div class="list-group-item active">
+                <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso" class="form-control search-bar" placeholder="Buscar pelo concurso" aria-describedby="basic-addon1">
+            </div>
+            <div class="list-group-item">
+                <label class="control-label">Ordenar por:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline">
+                    <input type="radio" checked name="optradio" ng-click="order('concurso')">Concurso
+                    <span class="sortorder" ng-show="predicate === 'concurso'" ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('ganhadoressena')">Ganhadores Sena
+                    <span class="sortorder" ng-show="predicate === 'ganhadoressena'" ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('rateiosena')">Rateio Sena
+                    <span class="sortorder" ng-show="predicate === 'rateiosena'" ng-class="{reverse:reverse}"></span>
+                </label>
+            </div>
+            <div class="list-group-item" ng-repeat="jogo in jogos | filter:searchtext | orderBy:predicate:reverse  ">
+                <h4>concurso: {{jogo.concurso}} - {{jogo.data}}</h4><br/>
+                <label ng-repeat="bola in  jogo.listaBolas">{{bola}}&nbsp;</label>
+                <br/>
+                ganhadores da sena: {{jogo.ganhadoressena}} - {{jogo.rateiosena | currency}}<br/>
+                ganhadores da quina: {{jogo.ganhadoresquina}} - {{jogo.rateioquina | currency}}<br/>
+                ganhadores da quadra : {{jogo.ganhadoresquadra}} - {{jogo.rateioquina | currency}}<br/>
+            </div>
+        </div>
+    </div>
 </div>
