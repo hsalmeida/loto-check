@@ -10,6 +10,10 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
     38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,
     58,59,60];
 
+    $scope.totalBolas = [1,2,3,4,5,6];
+
+    $scope.ganhadora = true;
+
     $scope.predicate = 'concurso';
     $scope.reverse = false;
     $scope.order = function(predicate) {
@@ -18,6 +22,26 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
     };
 
     $scope.jogo1 = [];
+
+    $scope.filterBola = function(bola, numero, ganhador){
+        return function(item){
+            if(ganhador) {
+                return item['bola' + bola] === numero && item['ganhadoressena'] > 0;
+            } else {
+                return item['bola' + bola] === numero;
+            }
+        }
+    };
+
+    $scope.filterBolaSum = function(numero, ganhador){
+        return function(item){
+            if(ganhador) {
+                return $.inArray(numero, item['listaBolas']) !== -1 && item['ganhadoressena'] > 0;
+            } else {
+                return $.inArray(numero, item['listaBolas']) !== -1;
+            }
+        }
+    };
 
     $scope.updateJogo = function(){
         waitingDialog.show();
@@ -46,6 +70,23 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
             waitingDialog.hide();
         });
     };
+
+    /* import */
+    $scope.import = function(){
+        $($scope.jogos).each(function(){
+            var mega = new Mega();
+            angular.merge(mega, this);
+            try {
+                mega.$save().then(function () {
+                    console.log('salvo');
+                });
+            } catch (err) {
+                console.log(err);
+                return false;
+            }
+        });
+    };
+    /* import */
 
     $scope.getJogos = function(){
         waitingDialog.show();

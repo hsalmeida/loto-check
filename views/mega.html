@@ -29,6 +29,27 @@
                 </div>
             </div>
         </div>
+
+        <label>Numeros por posição ordem de sorteio</label>
+        <br />
+        <input id="ganhadora" type="checkbox" ng-model="ganhadora" ng-click="filterBola()"><label for="ganhadora">Somente ganhadoras</label>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td></td>
+                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                <td></td>
+            </tr>
+            <tr ng-repeat="numero in numeros">
+                <td>{{numero}}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 10,
+                    'warning' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 15}"
+                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaSum(numero, ganhadora)).length >= 50}">
+                {{ ( jogos | filter: filterBolaSum(numero, ganhadora)).length }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="col-md-6">
         <div class="list-group">
