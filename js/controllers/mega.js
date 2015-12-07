@@ -43,6 +43,16 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
         }
     };
 
+    $scope.filterBolaOrdenada = function(bola, numero, ganhador){
+        return function(item){
+            if(ganhador) {
+                return item['listaBolas'][(bola - 1)] === numero && item['ganhadoressena'] > 0;
+            } else {
+                return item['listaBolas'][(bola - 1)] === numero;
+            }
+        }
+    };
+
     $scope.updateJogo = function(){
         waitingDialog.show();
         var q = {

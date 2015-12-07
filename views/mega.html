@@ -90,5 +90,23 @@
                 ganhadores da quadra : {{jogo.ganhadoresquadra}} - {{jogo.rateioquina | currency}}<br/>
             </div>
         </div>
+        <label>Numeros por posição ordenados</label>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td></td>
+                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+            </tr>
+            <tr ng-repeat="numero in numeros">
+                <td>{{numero}}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 10,
+                'warning' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 20,
+                'danger' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 30,
+                'info' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 40}"
+                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
