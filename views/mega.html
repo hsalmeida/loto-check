@@ -22,8 +22,9 @@
                     Gerar Menor Colisão
                 </button>
                 Dezenas: <input type="number" ng-model="dezenas" placeholder="6" step="1" min="6" max="8">
+                Jogos: <input type="number" ng-model="qtdJogos" placeholder="1" step="1" min="1" max="20">
                 <div class="list-group">
-                    <div class="list-group-item">
+                    <div class="list-group-item" ng-repeat="jogo1 in jogosColisao track by $index">
                         <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
                     </div>
                 </div>

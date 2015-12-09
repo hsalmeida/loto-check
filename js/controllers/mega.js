@@ -4,6 +4,7 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
     $scope.arquivo = "";
 
     $scope.dezenas = 6;
+    $scope.qtdJogos = 1;
 
     $scope.numeros = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,
     18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,
@@ -21,7 +22,8 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
         $scope.predicate = predicate;
     };
 
-    $scope.jogo1 = [];
+    $scope.jogosColisao = [];
+    $scope.jogoColisao = [];
 
     $scope.filterBola = function(bola, numero, ganhador){
         return function(item){
@@ -120,36 +122,46 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
          5	        45 a 52	43 a 54	34 a 57
          6	        57 a 60	54 a 60	47 a 60
          */
-        $scope.jogo1 = [];
-        if($scope.dezenas === 6) {
-            posicao($scope.jogo1, 0, 14, 14, 1);
-            posicao($scope.jogo1, 3, 27, 24, 2);
-            posicao($scope.jogo1, 13, 38, 25, 3);
-            posicao($scope.jogo1, 22, 48, 26, 4);
-            posicao($scope.jogo1, 33, 57, 24, 5);
-            posicao($scope.jogo1, 46, 60, 14, 6);
-        }
-        if($scope.dezenas === 7) {
-            posicao($scope.jogo1, 0, 14, 14, 1);
-            posicao($scope.jogo1, 7, 21, 14, 2);
-            posicao($scope.jogo1, 14, 28, 14, 3);
-            posicao($scope.jogo1, 21, 35, 14, 4);
-            posicao($scope.jogo1, 35, 42, 7, 5);
-            posicao($scope.jogo1, 42, 49, 7, 6);
-            posicao($scope.jogo1, 49, 60, 11, 7);
-        }
-        if($scope.dezenas === 8) {
-            posicao($scope.jogo1, 0, 14, 14, 1);
-            posicao($scope.jogo1, 0, 14, 14, 2);
-            posicao($scope.jogo1, 3, 27, 24, 3);
-            posicao($scope.jogo1, 3, 27, 24, 4);
-            posicao($scope.jogo1, 13, 38, 25, 5);
-            posicao($scope.jogo1, 22, 48, 26, 6);
-            posicao($scope.jogo1, 33, 57, 24, 7);
-            posicao($scope.jogo1, 46, 60, 14, 8);
+
+        $scope.jogosColisao = [];
+
+        for(var indice = 0; indice < $scope.qtdJogos; indice++) {
+            var jogo1 = [];
+
+            if($scope.dezenas === 6) {
+                posicao(jogo1, 0, 14, 14, 1);
+                posicao(jogo1, 3, 27, 24, 2);
+                posicao(jogo1, 13, 38, 25, 3);
+                posicao(jogo1, 22, 48, 26, 4);
+                posicao(jogo1, 33, 57, 24, 5);
+                posicao(jogo1, 46, 60, 14, 6);
+            }
+            if($scope.dezenas === 7) {
+                posicao(jogo1, 0, 14, 14, 1);
+                posicao(jogo1, 7, 21, 14, 2);
+                posicao(jogo1, 14, 28, 14, 3);
+                posicao(jogo1, 21, 35, 14, 4);
+                posicao(jogo1, 35, 42, 7, 5);
+                posicao(jogo1, 42, 49, 7, 6);
+                posicao(jogo1, 49, 60, 11, 7);
+            }
+            if($scope.dezenas === 8) {
+                posicao(jogo1, 0, 14, 14, 1);
+                posicao(jogo1, 0, 14, 14, 2);
+                posicao(jogo1, 3, 27, 24, 3);
+                posicao(jogo1, 3, 27, 24, 4);
+                posicao(jogo1, 13, 38, 25, 5);
+                posicao(jogo1, 22, 48, 26, 6);
+                posicao(jogo1, 33, 57, 24, 7);
+                posicao(jogo1, 46, 60, 14, 8);
+            }
+
+            jogo1.sort(function(a, b){return a-b});
+
+            $scope.jogosColisao.push(jogo1);
         }
 
-        $scope.jogo1.sort(function(a, b){return a-b});
+
     };
 
     function posicao(jogo, inicio, fim, tamanho, dezena){
