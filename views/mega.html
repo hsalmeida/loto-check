@@ -21,11 +21,14 @@
                 <button type="button" class="btn btn-lg btn-primary" ng-click="simularMenorColisao()">
                     Gerar Menor Colisão
                 </button>
-                Dezenas: <input type="number" ng-model="dezenas" placeholder="6" step="1" min="6" max="8">
+                Dezenas: <input type="number" ng-model="dezenas" placeholder="6" step="1" min="6" max="17">
                 Jogos: <input type="number" ng-model="qtdJogos" placeholder="1" step="1" min="1" max="20">
+                <br /><br />
+                Usando: <input id="padrao" type="radio" value="padrao" ng-model="base"><label for="padrao">Base Padrao</label>
+                <input ng-show="!iszip && jogos.length > 0" id="historica" type="radio" value="historica" ng-model="base"><label ng-show="!iszip && jogos.length > 0" for="historica">Historica</label>
                 <div class="list-group">
                     <div class="list-group-item" ng-repeat="jogo1 in jogosColisao track by $index">
-                        <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
+                        <span ng-repeat="j1 in jogo1.lista track by $index">&nbsp;{{j1}}</span>
                     </div>
                 </div>
             </div>
