@@ -2,6 +2,10 @@ body {
     height: 100%;
 }
 
+td {
+    text-align: center;
+}
+
 .sortorder:after {
     content: '\25b2';
 }

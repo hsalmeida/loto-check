@@ -1,13 +1,73 @@
 loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
+
+    $('.nav-tabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $scope.cellColorSorteio = function(vlr){
+        var classe = '';
+
+        if(vlr >= 20) {
+            classe = 'success';
+        }
+        if(vlr >= 25) {
+            classe = 'warning';
+        }
+        if(vlr >= 30) {
+            classe = 'danger';
+        }
+        if(vlr >= 50) {
+            classe = 'info';
+        }
+        return classe;
+    };
+
+    $scope.cellColorSorteioVencedora = function(vlr){
+        var classe = '';
+
+        if(vlr >= 4) {
+            classe = 'success';
+        }
+        if(vlr >= 10) {
+            classe = 'warning';
+        }
+        if(vlr >= 14) {
+            classe = 'danger';
+        }
+        if(vlr >= 15) {
+            classe = 'info';
+        }
+        return classe;
+    };
+
+    $scope.cellColorOrdenada = function(vlr){
+        var classe = '';
+
+        if(vlr >= 20) {
+            classe = 'success';
+        }
+        if(vlr >= 30) {
+            classe = 'warning';
+        }
+        if(vlr >= 40) {
+            classe = 'danger';
+        }
+        if(vlr >= 50) {
+            classe = 'info';
+        }
+        return classe;
+    };
+
     $scope.jogos = [];
     $scope.iszip = false;
     $scope.arquivo = "";
 
-    $scope.tabelaSorteio = [[]];
-    $scope.tabelaOrdenada = [[]];
+    $scope.tabelaSorteio = {};
+    $scope.tabelaOrdenada = {};
 
-    $scope.tabelaSorteioVencedora = [[]];
-    $scope.tabelaOrdenadaVencedora = [[]];
+    $scope.tabelaSorteioVencedora = {};
+    $scope.tabelaOrdenadaVencedora = {};
 
     $scope.dezenas = 6;
     $scope.qtdJogos = 1;
@@ -120,23 +180,42 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
 
             inicializaMatrizes();
 
+
             criarTabelaPorSorteio();
             criarTabelaPorOrdem();
 
             criarTabelaPorSorteioVencedora();
             criarTabelaPorOrdemVencedora();
 
-            //$scope.simularMenorColisao();
+
+            $scope.simularMenorColisao();
+
             waitingDialog.hide();
         });
     };
 
     function inicializaMatrizes(){
         $.each($scope.numeros, function(indiceNumero, numero){
-            $scope.tabelaSorteio[indiceNumero] = [0,0,0,0,0,0];
-            $scope.tabelaOrdenada[indiceNumero] = [0,0,0,0,0,0];
-            $scope.tabelaSorteioVencedora[indiceNumero] = [0,0,0,0,0,0];
-            $scope.tabelaOrdenadaVencedora[indiceNumero] = [0,0,0,0,0,0];
+
+            if(!$scope.tabelaSorteio[indiceNumero]) {
+                $scope.tabelaSorteio[indiceNumero] = [];
+                $scope.tabelaSorteio[indiceNumero].push(0,0,0,0,0,0);
+            }
+
+            if(!$scope.tabelaOrdenada[indiceNumero]){
+                $scope.tabelaOrdenada[indiceNumero] = [];
+                $scope.tabelaOrdenada[indiceNumero].push(0,0,0,0,0,0);
+            }
+
+            if(!$scope.tabelaSorteioVencedora[indiceNumero]){
+                $scope.tabelaSorteioVencedora[indiceNumero] = [];
+                $scope.tabelaSorteioVencedora[indiceNumero].push(0,0,0,0,0,0);
+            }
+
+            if(!$scope.tabelaOrdenadaVencedora[indiceNumero]){
+                $scope.tabelaOrdenadaVencedora[indiceNumero] = [];
+                $scope.tabelaOrdenadaVencedora[indiceNumero].push(0,0,0,0,0,0);
+            }
         });
     }
 
@@ -146,7 +225,11 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
             $.each($scope.totalBolas, function(indiceBola, bola){
                 $.each($scope.jogos, function(indiceJogo, jogo){
                     if(jogo[('bola' + bola)] === numero) {
-                        $scope.tabelaSorteio[indiceNumero][indiceBola]++;
+                        if($scope.tabelaSorteio[indiceNumero][indiceBola] !== undefined) {
+                            $scope.tabelaSorteio[indiceNumero][indiceBola]++;
+                        } else {
+                            $scope.tabelaSorteio[indiceNumero][indiceBola] = 0;
+                        }
                     }
                 });
             });
@@ -159,7 +242,9 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
             $.each($scope.totalBolas, function(indiceBola, bola){
                 $.each($scope.jogos, function(indiceJogo, jogo){
                     if(jogo.listaBolas[indiceBola] === numero) {
-                        $scope.tabelaSorteio[indiceNumero][indiceBola]++;
+                        if($scope.tabelaOrdenada[indiceNumero][indiceBola] !== undefined) {
+                            $scope.tabelaOrdenada[indiceNumero][indiceBola]++;
+                        }
                     }
                 });
             });
@@ -172,7 +257,11 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
             $.each($scope.totalBolas, function(indiceBola, bola){
                 $.each($scope.jogos, function(indiceJogo, jogo){
                     if(jogo[('bola' + bola)] === numero && jogo.ganhadoressena > 0) {
-                        $scope.tabelaSorteioVencedora[indiceNumero][indiceBola]++;
+                        if($scope.tabelaSorteioVencedora[indiceNumero][indiceBola] !== undefined) {
+                            $scope.tabelaSorteioVencedora[indiceNumero][indiceBola]++;
+                        } else {
+                            $scope.tabelaSorteioVencedora[indiceNumero][indiceBola] = 0;
+                        }
                     }
                 });
             });
@@ -185,7 +274,11 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
             $.each($scope.totalBolas, function(indiceBola, bola){
                 $.each($scope.jogos, function(indiceJogo, jogo){
                     if(jogo.listaBolas[indiceBola] === numero  && jogo.ganhadoressena > 0) {
-                        $scope.tabelaSorteioVencedora[indiceNumero][indiceBola]++;
+                        if($scope.tabelaOrdenadaVencedora[indiceNumero][indiceBola] != undefined) {
+                            $scope.tabelaOrdenadaVencedora[indiceNumero][indiceBola]++;
+                        } else {
+                            $scope.tabelaOrdenadaVencedora[indiceNumero][indiceBola] = 0;
+                        }
                     }
                 });
             });
@@ -193,7 +286,6 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
     }
 
     $scope.simularMenorColisao = function(){
-
         /*
          PROBABILIDADE POR POSIÇÃO
             	    Probabilidade x Dezenas
@@ -216,63 +308,63 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
                 {a: 33, b: 57},{a: 46, b: 60}
             ],
             [
-                {a: 0, b: 14},{a: 0, b: 14},{a: 6, b: 20},{a: 9, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60}
+                {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 22, b: 48}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60},
+                {a: 0, b: 14}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60},
+                {a: 0, b: 14},{a: 3, b: 27}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60},
+                {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60},
+                {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48}
             ],
             [
                 {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
-                {a: 33, b: 57},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},{a: 46, b: 60},
-                {a: 46, b: 60}
+                {a: 33, b: 57},{a: 46, b: 60},{a: 0, b: 14},{a: 3, b: 27},
+                {a: 13, b: 38},{a: 22, b: 48},{a: 33, b: 57},{a: 46, b: 60},
+                {a: 0, b: 14},{a: 3, b: 27},{a: 13, b: 38},{a: 22, b: 48},
+                {a: 33, b: 57}
             ]
         ];
 
@@ -282,8 +374,16 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
                 acertos: 0
             };
 
-            for(var b = 1;b <= $scope.dezenas; b++) {
-                posicao(jogo1, 0, 14, 14, b);
+            var probabilidade = [];
+
+            if($scope.base === 'padrao') {
+                probabilidade = probabilidades[($scope.dezenas - 6)];
+            } else {
+
+            }
+
+            for(var b = 0;b < $scope.dezenas; b++) {
+                posicao(jogo1, probabilidade, b);
             }
 
             jogo1.lista.sort(function(a, b){return a-b});
@@ -294,10 +394,11 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
 
     };
 
-    function posicao(jogo, inicio, fim, tamanho, dezena){
-        while(jogo.lista.length < dezena) {
-            var sub = $scope.numeros.slice(inicio, fim);
-            var rNum = Math.floor((Math.random() * tamanho) + 1);
+    function posicao(jogo, probabilidade, dezena){
+        while(jogo.lista.length <= dezena) {
+            var prob = probabilidade[dezena];
+            var sub = $scope.numeros.slice(prob.a, prob.b);
+            var rNum = Math.floor((Math.random() * (prob.b - prob.a)) + 1);
             var valor = sub[(rNum - 1)];
             if ($.inArray(valor, jogo.lista) === -1) {
                 jogo.lista.push(valor);

@@ -33,27 +33,6 @@
                 </div>
             </div>
         </div>
-
-        <label>Numeros por posição ordem de sorteio</label>
-        <br />
-        <input id="ganhadora" type="checkbox" ng-model="ganhadora" ng-click="filterBola()"><label for="ganhadora">Somente ganhadoras</label>
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td></td>
-                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
-                <td></td>
-            </tr>
-            <tr ng-repeat="numero in numeros">
-                <td>{{numero}}</td>
-                <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 10,
-                    'warning' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 15}"
-                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}</td>
-                <td ng-class="{'success' : ( jogos | filter: filterBolaSum(numero, ganhadora)).length >= 50}">
-                {{ ( jogos | filter: filterBolaSum(numero, ganhadora)).length }}</td>
-            </tr>
-            </tbody>
-        </table>
     </div>
     <div class="col-md-6">
         <div class="list-group">
@@ -94,23 +73,85 @@
                 ganhadores da quadra : {{jogo.ganhadoresquadra}} - {{jogo.rateioquina | currency}}<br/>
             </div>
         </div>
-        <label>Numeros por posição ordenados</label>
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td></td>
-                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
-            </tr>
-            <tr ng-repeat="numero in numeros">
-                <td>{{numero}}</td>
-                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 10,
-                'warning' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 20,
-                'danger' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 30,
-                'info' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 40}"
-                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length }}
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    </div>
+
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#sorteio" data-toggle="tab" aria-expanded="true">Tabela por Sorteio</a></li>
+            <li class=""><a href="#ordenada" data-toggle="tab" aria-expanded="false">Tabela por Ordenada</a></li>
+            <li class=""><a href="#winsorteio" data-toggle="tab" aria-expanded="false">Tabela por Sorteio Vencedoras</a></li>
+            <li class=""><a href="#winordenada" data-toggle="tab" aria-expanded="false">Tabela por Ordenada Vencedoras</a></li>
+        </ul>
+        <br />
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="sorteio">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                    </tr>
+                    <tr ng-repeat="numero in numeros">
+                        <td>{{numero}}</td>
+                        <td ng-repeat="numbola in totalBolas"
+                            ng-class="cellColorSorteio(tabelaSorteio[(numero - 1)][(numbola - 1)])">
+                            {{tabelaSorteio[(numero - 1)][(numbola - 1)]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="ordenada">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                    </tr>
+                    <tr ng-repeat="numero in numeros">
+                        <td>{{numero}}</td>
+                        <td ng-repeat="numbola in totalBolas"
+                            ng-class="cellColorOrdenada(tabelaOrdenada[(numero - 1)][(numbola - 1)])">
+                            {{tabelaOrdenada[(numero - 1)][(numbola - 1)]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="winsorteio">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                    </tr>
+                    <tr ng-repeat="numero in numeros">
+                        <td>{{numero}}</td>
+                        <td ng-repeat="numbola in totalBolas"
+                            ng-class="cellColorSorteioVencedora(tabelaSorteioVencedora[(numero - 1)][(numbola - 1)])">
+                            {{tabelaSorteioVencedora[(numero - 1)][(numbola - 1)]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="winordenada">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                    </tr>
+                    <tr ng-repeat="numero in numeros">
+                        <td>{{numero}}</td>
+                        <td ng-repeat="numbola in totalBolas"
+                            ng-class="cellColorOrdenada(tabelaOrdenadaVencedora[(numero - 1)][(numbola - 1)])">
+                            {{tabelaOrdenadaVencedora[(numero - 1)][(numbola - 1)]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
