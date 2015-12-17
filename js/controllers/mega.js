@@ -1,4 +1,4 @@
-loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
+loto.controller('MegaCtrl', ['$scope', 'Mega' , function($scope, Mega){
 
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
@@ -121,6 +121,24 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function($scope, Mega){
                 return item['listaBolas'][(bola - 1)] === numero;
             }
         }
+    };
+
+    $scope.gerarCSV = function(){
+        var data = [];
+        var cabecalho = "concurso;bola1;bola2;bola3;bola4;bola5;bola6\n";
+        data.push(cabecalho);
+        $.each($scope.jogos, function(){
+            var linha = this.concurso + ";" +
+                this.bola1  + ";" +
+                this.bola2 + ";" +
+                this.bola3 + ";" +
+                this.bola4 + ";" +
+                this.bola5 + ";" +
+                this.bola6 + "\n";
+            data.push(linha);
+        });
+
+        saveAs(new Blob(data,{type:"application/octet-stream"}), "mega.csv");
     };
 
     $scope.updateJogo = function(){
