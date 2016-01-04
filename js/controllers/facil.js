@@ -173,13 +173,20 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         repeticaoSimples($scope.jogo1, (6 + fator));
         repeticaoExclusiva($scope.jogo1, $scope.jogo2, (6 + fator));
 
-        repeticaoSimples($scope.jogo1, (15 + fator));
+        repeticaoExclusiva($scope.jogo2, $scope.jogo1, (15 + fator));
+
+        //repeticaoSimples($scope.jogo1, (15 + fator));
 
         var naoEstaNoJogo1 = naoExisteNaLista($scope.jogo1);
+
         var numero = Math.floor((Math.random() * (10 + fator)) + 1);
         naoEstaNoJogo1.splice(numero, 1);
 
         repeticaoExclusiva2(naoEstaNoJogo1, $scope.jogo2);
+
+        var naoEstaNenhumJogoAinda = naoExisteNenhumaLista($scope.jogo1, $scope.jogo2);
+
+        repeticaoExclusiva2(naoEstaNenhumJogoAinda, $scope.jogo2);
 
         repeticaoSimples($scope.jogo2, (15 + fator));
 
