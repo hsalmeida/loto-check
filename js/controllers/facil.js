@@ -90,6 +90,36 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     };
     /* import */
 
+
+    /* gerar csv */
+    $scope.gerarCSV = function(){
+        var data = [];
+        var cabecalho = "concurso;bola1;bola2;bola3;bola4;bola5;bola6;bola7;bola8;bola9;bola10;bola11;bola12;bola13;bola14;bola15\n";
+        data.push(cabecalho);
+        $.each($scope.jogos, function(){
+            var linha = this.concurso + ";" +
+                this.bola1  + ";" +
+                this.bola2 + ";" +
+                this.bola3 + ";" +
+                this.bola4 + ";" +
+                this.bola5 + ";" +
+                this.bola6 + ";" +
+                this.bola7 + ";" +
+                this.bola8 + ";" +
+                this.bola9 + ";" +
+                this.bola10 + ";" +
+                this.bola11 + ";" +
+                this.bola12 + ";" +
+                this.bola13 + ";" +
+                this.bola14 + ";" +
+                this.bola15 + "\n";
+            data.push(linha);
+        });
+
+        saveAs(new Blob(data,{type:"application/octet-stream"}), "facil.csv");
+    };
+    /* */
+
     /* update jogos */
     $scope.updateJogo = function(){
         waitingDialog.show();
