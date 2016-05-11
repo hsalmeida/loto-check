@@ -1,11 +1,11 @@
-loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
+loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
     $scope.arquivo = "";
     $scope.jogos = [];
     $scope.jogo = {};
     $scope.iszip = false;
 
-    $scope.numeros = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
-    $scope.totalBolas = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    $scope.numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+    $scope.totalBolas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
     $scope.ganhadora = true;
     $scope.dezenas = 15;
@@ -31,7 +31,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     $scope.ganhariaJogo3_13 = 0;
     $scope.ganhariaJogo3_14 = 0;
 
-    $scope.order = function(predicate) {
+    $scope.order = function (predicate) {
         $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
         $scope.predicate = predicate;
     };
@@ -40,9 +40,14 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     $scope.jogo2 = [];
     $scope.jogo3 = [];
 
-    $scope.filterBola = function(bola, numero, ganhador){
-        return function(item){
-            if(ganhador) {
+    $scope.jogoHist1 = [];
+    $scope.jogoHist2 = [];
+    $scope.jogoHist3 = [];
+    $scope.jogoHist4 = [];
+
+    $scope.filterBola = function (bola, numero, ganhador) {
+        return function (item) {
+            if (ganhador) {
                 return item['bola' + bola] === numero && item['ganhadores15'] > 0;
             } else {
                 return item['bola' + bola] === numero;
@@ -51,9 +56,9 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     };
 
 
-    $scope.filterBolaOrdenada = function(bola, numero, ganhador){
-        return function(item){
-            if(ganhador) {
+    $scope.filterBolaOrdenada = function (bola, numero, ganhador) {
+        return function (item) {
+            if (ganhador) {
                 return item['listaBolas'][(bola - 1)] === numero && item['ganhadores15'] > 0;
             } else {
                 return item['listaBolas'][(bola - 1)] === numero;
@@ -61,20 +66,226 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         }
     };
 
-    $scope.getJogos = function(){
+    $scope.getJogos = function () {
         waitingDialog.show();
-        Facil.all({"limit" : 2000}).then(function(jogos){
+        Facil.all({"limit": 2000}).then(function (jogos) {
             $scope.jogos = jogos;
             $scope.simularMenorColisao();
+            $scope.simularJogoGrupos();
             waitingDialog.hide();
         });
     };
 
+
+    $scope.simularJogoGrupos = function () {
+        /*
+         estrategia para escolher as dezenas fixas pega do ultimo sorteio
+         4 dezenas impares e 4 pares
+
+         1 dezena impar e 1 par do numero que ficou fora do sorteio.
+         completa as fixas assim
+         */
+        $scope.jogoHist1 = [];
+        $scope.jogoHist2 = [];
+        $scope.jogoHist3 = [];
+        $scope.jogoHist4 = [];
+
+        //var ultimoJogo = $scope.jogos[($scope.jogos.length - 1)];
+        var numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+        var numerosNaoSorteados = [];
+        var naoSorteadosPares = [];
+        var naoSorteadosImpares = [];
+        var ultimoJogoPares = [];
+        var ultimoJogoImpares = [];
+
+        var fixas = [];
+        var grupo1 = [];
+        var grupo2 = [];
+        var grupo3 = [];
+
+        var listaBolas = [3, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 19, 20 ];
+        var ultimoJogo = [3, 7, 8 ,9 ,10, 11, 12, 13, 15, 17, 18, 20, 21, 22, 23 ];
+
+        for (var a = 0; a < numeros.length; a++) {
+            if (listaBolas.indexOf(numeros[a]) === -1) {
+                numerosNaoSorteados.push(numeros[a]);
+            }
+        }
+
+        //separo os jogos do ultimo sorteio entre pares e impares.
+        for (var b = 0; b < listaBolas.length; b++) {
+            if (listaBolas[b] % 2 !== 0) {
+                ultimoJogoImpares.push(listaBolas[b]);
+            } else {
+                ultimoJogoPares.push(listaBolas[b]);
+            }
+        }
+
+        for (var c = 0; fixas.length < 4; c++) {
+
+            var numeroImpar = Math.floor(Math.random() * ultimoJogoImpares.length);
+            if (ultimoJogoImpares[numeroImpar]) {
+                //existe e vamos ver se nao esta na lista
+                if ($.inArray(ultimoJogoImpares[numeroImpar], fixas) === -1) {
+                    fixas.push(ultimoJogoImpares[numeroImpar]);
+                }
+            }
+        }
+
+        for (var d = 0; fixas.length < 8; d++) {
+
+            var numeroPar = Math.floor(Math.random() * ultimoJogoPares.length);
+            if (ultimoJogoPares[numeroPar]) {
+                //existe e vamos ver se nao esta na lista
+                if ($.inArray(ultimoJogoPares[numeroPar], fixas) === -1) {
+                    fixas.push(ultimoJogoPares[numeroPar]);
+                }
+            }
+        }
+
+        for (var e = 0; fixas.length < 9; e++) {
+            var unicoImpar = Math.floor(Math.random() * 25) + 1;
+            if (unicoImpar % 2 !== 0) {
+                if ($.inArray(unicoImpar, fixas) === -1 && $.inArray(unicoImpar, numerosNaoSorteados) !== -1) {
+                    fixas.push(unicoImpar);
+                }
+            }
+        }
+
+        for (var f = 0; fixas.length < 10; f++) {
+            var unicoPar = Math.floor(Math.random() * 25) + 1;
+            if (unicoPar % 2 === 0) {
+                if ($.inArray(unicoPar, fixas) === -1 && $.inArray(unicoImpar, numerosNaoSorteados) !== -1) {
+                    fixas.push(unicoPar);
+                }
+            }
+        }
+
+        numerosNaoSorteados = numerosNaoSorteados.filter(function (el) {
+            return fixas.indexOf(el) < 0;
+        });
+
+        //termina as fixas.
+        /*
+         2 dezenas impares e 3 dezenas pares das que ficaram de fora do sorteio.
+         2 pares e 3 impares
+         completar com o que restou no terceiro grupo.
+         sortear em 7 / 8 entre pares e impares.
+         1 a 3 jogo com as fixas mais cada grupo
+         ultimo jogo com somente os grupos
+         */
+
+        for (var i = 0; i < numerosNaoSorteados.length; i++) {
+            if (numerosNaoSorteados[i] % 2 !== 0) {
+                naoSorteadosImpares.push(numerosNaoSorteados[i]);
+            } else {
+                naoSorteadosPares.push(numerosNaoSorteados[i]);
+            }
+        }
+
+        for (var g = 0; grupo1.length < 2; g++) {
+            var grupo1impar = naoSorteadosImpares[Math.floor(Math.random() * naoSorteadosImpares.length)];
+            if ($.inArray(grupo1impar, grupo1) === -1 && $.inArray(grupo1impar, fixas) === -1) {
+                //nao tem ainda.
+                grupo1.push(grupo1impar);
+            }
+        }
+
+        for (var h = 0; grupo1.length < 5; h++) {
+            var grupo1par = naoSorteadosPares[Math.floor(Math.random() * naoSorteadosPares.length)];
+            if ($.inArray(grupo1par, grupo1) === -1 && $.inArray(grupo1par, fixas) === -1) {
+                //nao tem ainda.
+                grupo1.push(grupo1par);
+            }
+        }
+
+        naoSorteadosImpares = naoSorteadosImpares.filter(function (el) {
+            return grupo1.indexOf(el) < 0;
+        });
+        naoSorteadosPares = naoSorteadosPares.filter(function (el) {
+            return grupo1.indexOf(el) < 0;
+        });
+
+        var naoSorteadosConcat = naoSorteadosPares.concat(naoSorteadosImpares);
+
+        numeros = numeros.filter(function (el) {
+            return fixas.indexOf(el) < 0;
+        });
+
+        numeros = numeros.filter(function (el) {
+            return grupo1.indexOf(el) < 0;
+        });
+
+        while (naoSorteadosConcat.length < 5) {
+            var numero = numeros[Math.floor(Math.random() * numeros.length)];
+            if($.inArray(numero, naoSorteadosConcat) === -1) {
+                naoSorteadosConcat.push(numero);
+            }
+        }
+
+        numeros = numeros.filter(function (el) {
+            return naoSorteadosConcat.indexOf(el) < 0;
+        });
+
+        grupo2 = naoSorteadosConcat;
+        grupo3 = numeros;
+
+        $scope.jogoHist1 = fixas.concat(grupo1);
+        $scope.jogoHist2 = fixas.concat(grupo2);
+        $scope.jogoHist3 = fixas.concat(grupo3);
+        $scope.jogoHist4 = grupo1.concat(grupo2);
+        $scope.jogoHist4 = $scope.jogoHist4.concat(grupo3);
+
+        $scope.jogoHist1.sort(function (a, b) {
+            return a - b
+        });
+        $scope.jogoHist2.sort(function (a, b) {
+            return a - b
+        });
+        $scope.jogoHist3.sort(function (a, b) {
+            return a - b
+        });
+        $scope.jogoHist4.sort(function (a, b) {
+            return a - b
+        });
+
+        var quantidade1 = 0;
+        var quantidade2 = 0;
+        var quantidade3 = 0;
+        var quantidade4 = 0;
+
+        $(ultimoJogo).each(function () {
+            if ($.inArray(Number(this), $scope.jogoHist1) !== -1) {
+                quantidade1++;
+            }
+        });
+        $(ultimoJogo).each(function () {
+            if ($.inArray(Number(this), $scope.jogoHist2) !== -1) {
+                quantidade2++;
+            }
+        });
+        $(ultimoJogo).each(function () {
+            if ($.inArray(Number(this), $scope.jogoHist3) !== -1) {
+                quantidade3++;
+            }
+        });
+        $(ultimoJogo).each(function () {
+            if ($.inArray(Number(this), $scope.jogoHist4) !== -1) {
+                quantidade4++;
+            }
+        });
+
+        console.log(" quantidade1 " + quantidade1);
+        console.log(" quantidade2 " + quantidade2);
+        console.log(" quantidade3 " + quantidade3);
+        console.log(" quantidade4 " + quantidade4);
+    };
+
     /* import */
-    $scope.import = function(){
-        $.getJSON('js/assets/jogo.json', function(data){
+    $scope.import = function () {
+        $.getJSON('js/assets/jogo.json', function (data) {
             var lista = data.lista;
-            $(lista).each(function(){
+            $(lista).each(function () {
                 var facil = new Facil();
                 angular.merge(facil, this);
                 try {
@@ -92,13 +303,13 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
 
     /* gerar csv */
-    $scope.gerarCSV = function(){
+    $scope.gerarCSV = function () {
         var data = [];
         var cabecalho = "concurso;bola1;bola2;bola3;bola4;bola5;bola6;bola7;bola8;bola9;bola10;bola11;bola12;bola13;bola14;bola15\n";
         data.push(cabecalho);
-        $.each($scope.jogos, function(){
+        $.each($scope.jogos, function () {
             var linha = this.concurso + ";" +
-                this.bola1  + ";" +
+                this.bola1 + ";" +
                 this.bola2 + ";" +
                 this.bola3 + ";" +
                 this.bola4 + ";" +
@@ -116,21 +327,21 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
             data.push(linha);
         });
 
-        saveAs(new Blob(data,{type:"application/octet-stream"}), "facil.csv");
+        saveAs(new Blob(data, {type: "application/octet-stream"}), "facil.csv");
     };
     /* */
 
     /* update jogos */
-    $scope.updateJogo = function(){
+    $scope.updateJogo = function () {
         waitingDialog.show();
         var q = {
-            "sort" : {
-                "concurso" : -1
+            "sort": {
+                "concurso": -1
             },
-            "limit" : 1
+            "limit": 1
         };
-        Facil.query(null, q).then(function(ultimafacil){
-            $($scope.jogos).each(function(){
+        Facil.query(null, q).then(function (ultimafacil) {
+            $($scope.jogos).each(function () {
                 if (this.concurso > ultimafacil[0].concurso) {
                     var facil = new Facil();
                     angular.merge(facil, this);
@@ -151,7 +362,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     /* update jogos */
 
     /*gerador de menor impacto*/
-    $scope.simularMenorColisao = function(){
+    $scope.simularMenorColisao = function () {
         /*
          1. Escolha seis dezenas e marque-as nas duas primeiras apostas;
          2. Marque outras nove dezenas na primeira aposta;
@@ -167,6 +378,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         $scope.jogo1 = [];
         $scope.jogo2 = [];
         $scope.jogo3 = [];
+
 
         var fator = ($scope.dezenas - 15);
 
@@ -195,9 +407,9 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
         var naoEstaNenhumJogo = naoExisteNenhumaLista($scope.jogo1, $scope.jogo2);
 
-        if(naoEstaNenhumJogo.length > 0) {
-            for(var index3 = 0;index3 < naoEstaNenhumJogo.length; index3++) {
-                if($scope.jogo3.length === (15 + fator)) {
+        if (naoEstaNenhumJogo.length > 0) {
+            for (var index3 = 0; index3 < naoEstaNenhumJogo.length; index3++) {
+                if ($scope.jogo3.length === (15 + fator)) {
                     break;
                 }
                 $scope.jogo3.push(naoEstaNenhumJogo[index3]);
@@ -205,9 +417,15 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         }
         repeticaoSimples($scope.jogo3, (15 + fator));
 
-        $scope.jogo1.sort(function(a, b){return a-b});
-        $scope.jogo2.sort(function(a, b){return a-b});
-        $scope.jogo3.sort(function(a, b){return a-b});
+        $scope.jogo1.sort(function (a, b) {
+            return a - b
+        });
+        $scope.jogo2.sort(function (a, b) {
+            return a - b
+        });
+        $scope.jogo3.sort(function (a, b) {
+            return a - b
+        });
 
         $scope.ganhariaJogo1 = 0;
         $scope.ganhariaJogo1_11 = 0;
@@ -227,70 +445,70 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
         $scope.ganhariaJogo3_13 = 0;
         $scope.ganhariaJogo3_14 = 0;
 
-        if($scope.jogos.length > 0) {
+        if ($scope.jogos.length > 0) {
             /* verificar se ganharia em algum jogo */
-            $($scope.jogos).each(function(){
+            $($scope.jogos).each(function () {
                 var quantidade1 = 0;
                 var quantidade2 = 0;
                 var quantidade3 = 0;
-                $(this.listaBolas).each(function(){
-                    if($.inArray(Number(this), $scope.jogo1) !== -1) {
+                $(this.listaBolas).each(function () {
+                    if ($.inArray(Number(this), $scope.jogo1) !== -1) {
                         quantidade1++;
                     }
                 });
-                $(this.listaBolas).each(function(){
-                    if($.inArray(Number(this), $scope.jogo2) !== -1) {
+                $(this.listaBolas).each(function () {
+                    if ($.inArray(Number(this), $scope.jogo2) !== -1) {
                         quantidade2++;
                     }
                 });
-                $(this.listaBolas).each(function(){
-                    if($.inArray(Number(this), $scope.jogo3) !== -1) {
+                $(this.listaBolas).each(function () {
+                    if ($.inArray(Number(this), $scope.jogo3) !== -1) {
                         quantidade3++;
                     }
                 });
-                if(quantidade1 === 11){
+                if (quantidade1 === 11) {
                     $scope.ganhariaJogo1_11++;
                 }
-                if(quantidade1 === 12){
+                if (quantidade1 === 12) {
                     $scope.ganhariaJogo1_12++;
                 }
-                if(quantidade1 === 13){
+                if (quantidade1 === 13) {
                     $scope.ganhariaJogo1_13++;
                 }
-                if(quantidade1 === 14){
+                if (quantidade1 === 14) {
                     $scope.ganhariaJogo1_14++;
                 }
-                if(quantidade2 === 11){
+                if (quantidade2 === 11) {
                     $scope.ganhariaJogo2_11++;
                 }
-                if(quantidade2 === 12){
+                if (quantidade2 === 12) {
                     $scope.ganhariaJogo2_12++;
                 }
-                if(quantidade2 === 13){
+                if (quantidade2 === 13) {
                     $scope.ganhariaJogo2_13++;
                 }
-                if(quantidade2 === 14){
+                if (quantidade2 === 14) {
                     $scope.ganhariaJogo2_14++;
                 }
-                if(quantidade3 === 11){
+                if (quantidade3 === 11) {
                     $scope.ganhariaJogo3_11++;
                 }
-                if(quantidade3 === 12){
+                if (quantidade3 === 12) {
                     $scope.ganhariaJogo3_12++;
                 }
-                if(quantidade3 === 13){
+                if (quantidade3 === 13) {
                     $scope.ganhariaJogo3_13++;
                 }
-                if(quantidade3 === 14){
+                if (quantidade3 === 14) {
                     $scope.ganhariaJogo3_14++;
                 }
-                if(quantidade1 >= 15) {
+                if (quantidade1 >= 15) {
                     $scope.ganhariaJogo1++;
                 }
-                if(quantidade2 >= 15) {
+                if (quantidade2 >= 15) {
                     $scope.ganhariaJogo2++;
                 }
-                if(quantidade3 >= 15) {
+                if (quantidade3 >= 15) {
                     $scope.ganhariaJogo3++;
                 }
             });
@@ -302,8 +520,8 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
     function naoExisteNenhumaLista(jogo1, jogo2) {
         var naoEstaNenhumJogo = [];
-        for(var indice = 1; indice < 25; indice++) {
-            if($.inArray(indice, jogo1) === -1 && $.inArray(indice, jogo2) === -1) {
+        for (var indice = 1; indice < 25; indice++) {
+            if ($.inArray(indice, jogo1) === -1 && $.inArray(indice, jogo2) === -1) {
                 naoEstaNenhumJogo.push(indice);
             }
         }
@@ -312,8 +530,8 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
     function naoExisteNaLista(jogo1) {
         var naoEstaNoJogo1 = [];
-        for(var indice = 1; indice < 25; indice++) {
-            if($.inArray(indice, jogo1) === -1) {
+        for (var indice = 1; indice < 25; indice++) {
+            if ($.inArray(indice, jogo1) === -1) {
                 naoEstaNoJogo1.push(indice);
             }
         }
@@ -322,29 +540,29 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
     function repeticaoExclusiva3(jogo1, jogo2, jogo3, repeticao) {
 
-        for(var indice = 0;indice < jogo1.length; indice++) {
-            if($.inArray(jogo1[indice], jogo2) === -1) {
+        for (var indice = 0; indice < jogo1.length; indice++) {
+            if ($.inArray(jogo1[indice], jogo2) === -1) {
                 jogo3.push(jogo1[indice]);
             }
-            if(jogo3.length === repeticao) {
+            if (jogo3.length === repeticao) {
                 break;
             }
         }
     }
 
     function repeticaoExclusiva2(jogo, jogo2) {
-        for(var indice = 0;indice < jogo.length; indice++) {
-            if($.inArray(jogo[indice], jogo2) === -1) {
+        for (var indice = 0; indice < jogo.length; indice++) {
+            if ($.inArray(jogo[indice], jogo2) === -1) {
                 jogo2.push(jogo[indice]);
             }
         }
     }
 
     function repeticaoExclusiva(jogo1, jogo2, repeticao) {
-        while(jogo2.length < repeticao) {
+        while (jogo2.length < repeticao) {
             var numero = Math.floor((Math.random() * 25) + 1);
-            if($.inArray(numero, jogo1) === -1) {
-                if($.inArray(numero, jogo2) === -1) {
+            if ($.inArray(numero, jogo1) === -1) {
+                if ($.inArray(numero, jogo2) === -1) {
                     jogo2.push(numero);
                 }
             }
@@ -352,9 +570,9 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
     }
 
     function repeticaoSimples(jogo, repeticao) {
-        while(jogo.length < repeticao) {
+        while (jogo.length < repeticao) {
             var rNum = Math.floor((Math.random() * 25) + 1);
-            if($.inArray(rNum, jogo) === -1) {
+            if ($.inArray(rNum, jogo) === -1) {
                 jogo.push(rNum);
             }
         }
@@ -378,14 +596,14 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                         scope.fileread = loadEvent.target.result;
                         var zip = new JSZip(scope.fileread);
                         $.each(zip.files, function (index, zipEntry) {
-                            if(zipEntry.name.lastIndexOf('.') > -1) {
+                            if (zipEntry.name.lastIndexOf('.') > -1) {
                                 var indice = zipEntry.name.lastIndexOf('.');
                                 var lenName = zipEntry.name.length;
                                 var extension = zipEntry.name.substring((indice + 1), lenName);
-                                if(extension === 'HTM' || extension === 'HTML') {
-                                    var el = document.createElement( 'html' );
+                                if (extension === 'HTM' || extension === 'HTML') {
+                                    var el = document.createElement('html');
                                     var stringText = zipEntry.asText();
-                                    stringText.replace(/ /g,'');
+                                    stringText.replace(/ /g, '');
                                     el.innerHTML = stringText;
                                     var table = $(el).find('table');
                                     $(table).find('*').removeAttr('style').removeAttr('width').removeAttr('height')
@@ -396,12 +614,12 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                         lista: []
                                     };
 
-                                    var regdot = new RegExp("[.]","gm");
-                                    
-                                    $(trs).each(function(){
+                                    var regdot = new RegExp("[.]", "gm");
+
+                                    $(trs).each(function () {
                                         var concurso = $(this).find('td:eq(0)').html();
-                                        if($.isNumeric(concurso)) {
-                                            if(concurso === atual) {
+                                        if ($.isNumeric(concurso)) {
+                                            if (concurso === atual) {
 
                                             } else {
 
@@ -425,10 +643,12 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                                 var bola15 = Number($(this).find('td:eq(16)').html());
                                                 var listaBolas = [];
                                                 listaBolas.push(Number(bola1), Number(bola2), Number(bola3),
-                                                    Number(bola4), Number(bola5),Number(bola6), Number(bola7),
+                                                    Number(bola4), Number(bola5), Number(bola6), Number(bola7),
                                                     Number(bola8), Number(bola9), Number(bola10), Number(bola11),
-                                                    Number(bola12), Number(bola13),Number(bola14), Number(bola15));
-                                                listaBolas.sort(function(a, b){return a-b});
+                                                    Number(bola12), Number(bola13), Number(bola14), Number(bola15));
+                                                listaBolas.sort(function (a, b) {
+                                                    return a - b
+                                                });
                                                 var arrecadacaoTotal = $(this).find('td:eq(17)').html();
                                                 var ganhadores15 = $(this).find('td:eq(18)').html();
                                                 var cidade = $(this).find('td:eq(19)').html().trim();
@@ -450,7 +670,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
                                                 var jogo = {
                                                     concurso: Number(concurso),
-                                                    data : data,
+                                                    data: data,
                                                     bola1: bola1,
                                                     bola2: bola2,
                                                     bola3: bola3,
@@ -466,8 +686,8 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                                     bola13: bola13,
                                                     bola14: bola14,
                                                     bola15: bola15,
-                                                    listaBolas : listaBolas,
-                                                    arrecadacaoTotal: Number(arrecadacaoTotal.replace(regdot,'').replace(',','.')),
+                                                    listaBolas: listaBolas,
+                                                    arrecadacaoTotal: Number(arrecadacaoTotal.replace(regdot, '').replace(',', '.')),
                                                     ganhadores15: Number(ganhadores15),
                                                     cidades: [],
                                                     ufs: [],
@@ -475,14 +695,14 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                                     ganhadores13: Number(ganhadores13),
                                                     ganhadores12: Number(ganhadores12),
                                                     ganhadores11: Number(ganhadores11),
-                                                    rateio15: Number(rateio15.replace(regdot,'').replace(',','.')),
-                                                    rateio14: Number(rateio14.replace(regdot,'').replace(',','.')),
-                                                    rateio13: Number(rateio13.replace(regdot,'').replace(',','.')),
-                                                    rateio12: Number(rateio12.replace(regdot,'').replace(',','.')),
-                                                    rateio11: Number(rateio11.replace(regdot,'').replace(',','.')),
-                                                    acumulado15: Number(acumulado15.replace(regdot,'').replace(',','.')),
-                                                    estimativa: Number(estimativa.replace(regdot,'').replace(',','.')),
-                                                    acumuladorEspecial: Number(acumuladorEspecial.replace(regdot,'').replace(',','.'))
+                                                    rateio15: Number(rateio15.replace(regdot, '').replace(',', '.')),
+                                                    rateio14: Number(rateio14.replace(regdot, '').replace(',', '.')),
+                                                    rateio13: Number(rateio13.replace(regdot, '').replace(',', '.')),
+                                                    rateio12: Number(rateio12.replace(regdot, '').replace(',', '.')),
+                                                    rateio11: Number(rateio11.replace(regdot, '').replace(',', '.')),
+                                                    acumulado15: Number(acumulado15.replace(regdot, '').replace(',', '.')),
+                                                    estimativa: Number(estimativa.replace(regdot, '').replace(',', '.')),
+                                                    acumuladorEspecial: Number(acumuladorEspecial.replace(regdot, '').replace(',', '.'))
                                                 };
                                                 jogo.cidades.push((cidade.trim()));
                                                 jogo.ufs.push((uf.trim()));
@@ -491,7 +711,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
 
                                             }
                                         } else {
-                                            if(atual !== 0) {
+                                            if (atual !== 0) {
                                                 var ufAtual = $(this).find('td:eq(1)').html();
                                                 jogos.lista[(jogos.lista.length - 1)].cidades.push(concurso.trim());
                                                 jogos.lista[(jogos.lista.length - 1)].ufs.push(ufAtual.trim());
@@ -499,7 +719,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function($scope, Facil){
                                         }
                                     });
                                     scope.jogos = jogos.lista;
-                                    if(scope.jogos.length > 0) {
+                                    if (scope.jogos.length > 0) {
                                         scope.iszip = true;
                                     }
                                     waitingDialog.hide();
