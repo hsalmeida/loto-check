@@ -19,6 +19,16 @@ td {
     overflow: auto;
 }
 
+.grupos {
+    font-size: 14px;
+}
+
+.label-as-badge {
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 10rem;
+}
+
 @viewport {
     width: device-width;
 }

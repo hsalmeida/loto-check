@@ -68,14 +68,69 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
 
     $scope.getJogos = function () {
         waitingDialog.show();
+        $scope.jogosProporcao = [];
         Facil.all({"limit": 2000}).then(function (jogos) {
+
+
+            $.each(jogos, function () {
+                var sorteadoImpares = [];
+                var sorteadoPares = [];
+                var listaBolas = this.listaBolas;
+                for (var b = 0; b < listaBolas.length; b++) {
+                    if (listaBolas[b] % 2 !== 0) {
+                        sorteadoImpares.push(listaBolas[b]);
+                    } else {
+                        sorteadoPares.push(listaBolas[b]);
+                    }
+                }
+                if(sorteadoPares.length > 6 && sorteadoImpares.length > 6) {
+                    this.impares = sorteadoImpares.length;
+                    this.pares = sorteadoPares.length;
+                    $scope.jogosProporcao.push(this);
+                }
+            });
+
             $scope.jogos = jogos;
             $scope.simularMenorColisao();
-            $scope.simularJogoGrupos();
             waitingDialog.hide();
         });
     };
 
+
+    $scope.simularCenarios = function () {
+        console.log("que os jogos comecem");
+        var loop = 0;
+        var jogoHist = $scope.simularJogoGrupos();
+        if(jogoHist.qtdGrupos1 > 14 || jogoHist.qtdGrupos2 > 14 || jogoHist.qtdGrupos3 > 14 || jogoHist.qtdGrupos4 > 14) {
+            console.log(loop + " " + jogoHist.qtdGrupos1 + " " + jogoHist.qtdGrupos2 + " " + jogoHist.qtdGrupos3 + " " + jogoHist.qtdGrupos4);
+        }
+        while(loop < 4000) {
+            jogoHist = $scope.simularJogoGrupos();
+            loop++;
+            if(jogoHist.qtdGrupos1 > 14 || jogoHist.qtdGrupos2 > 14 || jogoHist.qtdGrupos3 > 14 || jogoHist.qtdGrupos4 > 14) {
+                console.log(loop + " " + jogoHist.qtdGrupos1 + " " + jogoHist.qtdGrupos2 + " " + jogoHist.qtdGrupos3 + " " + jogoHist.qtdGrupos4);
+            }
+        }
+        console.log("que os jogos terminem");
+    };
+
+    $scope.simularJogoGruposTela = function () {
+        var jogoHist = $scope.simularJogoGrupos();
+        $scope.jogoHist1 = jogoHist.jogoHist1;
+        $scope.jogoHist2 = jogoHist.jogoHist2;
+        $scope.jogoHist3 = jogoHist.jogoHist3;
+        $scope.jogoHist4 = jogoHist.jogoHist4;
+
+        $scope.qtdGrupos1 = jogoHist.qtdGrupos1;
+        $scope.qtdGrupos2 = jogoHist.qtdGrupos2;
+        $scope.qtdGrupos3 = jogoHist.qtdGrupos3;
+        $scope.qtdGrupos4 = jogoHist.qtdGrupos4;
+
+        $scope.gruposFixas = jogoHist.gruposFixas;
+        $scope.gruposGrupo1 = jogoHist.gruposGrupo1;
+        $scope.gruposGrupo2 = jogoHist.gruposGrupo2;
+        $scope.gruposGrupo3 = jogoHist.gruposGrupo3;
+    };
 
     $scope.simularJogoGrupos = function () {
         /*
@@ -85,26 +140,42 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
          1 dezena impar e 1 par do numero que ficou fora do sorteio.
          completa as fixas assim
          */
-        $scope.jogoHist1 = [];
-        $scope.jogoHist2 = [];
-        $scope.jogoHist3 = [];
-        $scope.jogoHist4 = [];
+
+        var jogoHist = {
+            jogoHist1 : [],
+            jogoHist2 : [],
+            jogoHist3 : [],
+            jogoHist4 : [],
+            qtdGrupos1 : 0,
+            qtdGrupos2 : 0,
+            qtdGrupos3 : 0,
+            qtdGrupos4 : 0,
+            gruposFixas : [],
+            gruposGrupo1 : [],
+            gruposGrupo2 : [],
+            gruposGrupo3 : []
+        };
+
+        jogoHist.jogoHist1 = [];
+        jogoHist.jogoHist2 = [];
+        jogoHist.jogoHist3 = [];
+        jogoHist.jogoHist4 = [];
 
         //var ultimoJogo = $scope.jogos[($scope.jogos.length - 1)];
         var numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
         var numerosNaoSorteados = [];
         var naoSorteadosPares = [];
         var naoSorteadosImpares = [];
-        var ultimoJogoPares = [];
-        var ultimoJogoImpares = [];
+        var sorteadoPares = [];
+        var sorteadoImpares = [];
 
         var fixas = [];
         var grupo1 = [];
         var grupo2 = [];
         var grupo3 = [];
 
-        var listaBolas = [3, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 19, 20 ];
-        var ultimoJogo = [3, 7, 8 ,9 ,10, 11, 12, 13, 15, 17, 18, 20, 21, 22, 23 ];
+        var listaBolas = [1, 2, 3, 4, 6, 8, 9, 13, 15, 17, 18, 19, 20, 22, 23 ];
+        var ultimoJogo = [3, 5, 7, 8, 9, 11, 13, 14, 15, 16, 17, 18, 20, 21, 23 ];
 
         for (var a = 0; a < numeros.length; a++) {
             if (listaBolas.indexOf(numeros[a]) === -1) {
@@ -115,34 +186,36 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         //separo os jogos do ultimo sorteio entre pares e impares.
         for (var b = 0; b < listaBolas.length; b++) {
             if (listaBolas[b] % 2 !== 0) {
-                ultimoJogoImpares.push(listaBolas[b]);
+                sorteadoImpares.push(listaBolas[b]);
             } else {
-                ultimoJogoPares.push(listaBolas[b]);
+                sorteadoPares.push(listaBolas[b]);
             }
         }
 
+        //faco as 4 impares das fixas
         for (var c = 0; fixas.length < 4; c++) {
 
-            var numeroImpar = Math.floor(Math.random() * ultimoJogoImpares.length);
-            if (ultimoJogoImpares[numeroImpar]) {
+            var numeroImpar = Math.floor(Math.random() * sorteadoImpares.length);
+            if (sorteadoImpares[numeroImpar]) {
                 //existe e vamos ver se nao esta na lista
-                if ($.inArray(ultimoJogoImpares[numeroImpar], fixas) === -1) {
-                    fixas.push(ultimoJogoImpares[numeroImpar]);
+                if ($.inArray(sorteadoImpares[numeroImpar], fixas) === -1) {
+                    fixas.push(sorteadoImpares[numeroImpar]);
                 }
             }
         }
-
+        //faco as 4 pares das fixas
         for (var d = 0; fixas.length < 8; d++) {
 
-            var numeroPar = Math.floor(Math.random() * ultimoJogoPares.length);
-            if (ultimoJogoPares[numeroPar]) {
+            var numeroPar = Math.floor(Math.random() * sorteadoPares.length);
+            if (sorteadoPares[numeroPar]) {
                 //existe e vamos ver se nao esta na lista
-                if ($.inArray(ultimoJogoPares[numeroPar], fixas) === -1) {
-                    fixas.push(ultimoJogoPares[numeroPar]);
+                if ($.inArray(sorteadoPares[numeroPar], fixas) === -1) {
+                    fixas.push(sorteadoPares[numeroPar]);
                 }
             }
         }
 
+        //faco a impar que nao saiu para a fixa
         for (var e = 0; fixas.length < 9; e++) {
             var unicoImpar = Math.floor(Math.random() * 25) + 1;
             if (unicoImpar % 2 !== 0) {
@@ -152,6 +225,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
             }
         }
 
+        //faco a par que nao saiu para a fixa
         for (var f = 0; fixas.length < 10; f++) {
             var unicoPar = Math.floor(Math.random() * 25) + 1;
             if (unicoPar % 2 === 0) {
@@ -161,6 +235,17 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
             }
         }
 
+        //eu tiro das pares o valor que está na fixa que eu ja usei.
+        sorteadoPares = sorteadoPares.filter(function (el) {
+            return fixas.indexOf(el) < 0;
+        });
+
+        //faco o mesmo para as impares.
+        sorteadoImpares = sorteadoImpares.filter(function (el) {
+            return fixas.indexOf(el) < 0;
+        });
+
+        //tiro agora dos nao sorteados o que eu usei na fixa tambem.
         numerosNaoSorteados = numerosNaoSorteados.filter(function (el) {
             return fixas.indexOf(el) < 0;
         });
@@ -191,6 +276,24 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
             }
         }
 
+        //vou mudar para colocar usando um par do jogo que saiu.
+        //por isso reduzo para 4 ou inves de 5.
+        for (var h = 0; grupo1.length < 4; h++) {
+            var grupo1par = naoSorteadosPares[Math.floor(Math.random() * naoSorteadosPares.length)];
+            if ($.inArray(grupo1par, grupo1) === -1 && $.inArray(grupo1par, fixas) === -1) {
+                //nao tem ainda.
+                grupo1.push(grupo1par);
+            }
+        }
+        //agora coloco o par que saiu no final do grupo1.
+        for (var z = 0; grupo1.length < 5; z++) {
+            var grupo1parJogo = sorteadoPares[Math.floor(Math.random() * sorteadoPares.length)];
+            if ($.inArray(grupo1parJogo, grupo1) === -1 && $.inArray(grupo1parJogo, fixas) === -1) {
+                grupo1.push(grupo1parJogo);
+            }
+        }
+
+        /*
         for (var h = 0; grupo1.length < 5; h++) {
             var grupo1par = naoSorteadosPares[Math.floor(Math.random() * naoSorteadosPares.length)];
             if ($.inArray(grupo1par, grupo1) === -1 && $.inArray(grupo1par, fixas) === -1) {
@@ -198,24 +301,51 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
                 grupo1.push(grupo1par);
             }
         }
+        */
 
+        //verifico se tem algum impar no grupo1 e tiro de lá
+        sorteadoImpares = sorteadoImpares.filter(function (el) {
+            return grupo1.indexOf(el) < 0;
+        });
+
+        //retiro dos nao sorteados impares o que ja coloquei no grupo 1
         naoSorteadosImpares = naoSorteadosImpares.filter(function (el) {
             return grupo1.indexOf(el) < 0;
         });
+
+        //retiro dos nao sorteados pares o que ja coloquei no grupo 1
         naoSorteadosPares = naoSorteadosPares.filter(function (el) {
             return grupo1.indexOf(el) < 0;
         });
 
-        var naoSorteadosConcat = naoSorteadosPares.concat(naoSorteadosImpares);
+        //vou pegar só um impar dos grupo de impares sorteados. aleatorio
+        var sorteadoImparSolitario = sorteadoImpares[Math.floor(Math.random() * sorteadoImpares.length)];
+        var naoSorteadosConcat = naoSorteadosPares;
+        //agora eu concateno os dois para criar uma lista unica.
+        for(var r = 0; r < naoSorteadosImpares.length; r++) {
+            if(naoSorteadosConcat.length === 4) {
+                break;
+            }
+            naoSorteadosConcat.push(naoSorteadosImpares[r]);
+        }
+        //naoSorteadosConcat = naoSorteadosPares.concat(naoSorteadosImpares);
+        //vou colocar tambem o impar solitario.
+        if(naoSorteadosConcat.length < 5) {
+            naoSorteadosConcat.push(sorteadoImparSolitario);
+        }
 
+        //vou ver agora os numeros totais tirando o que saiu das fixas.
         numeros = numeros.filter(function (el) {
             return fixas.indexOf(el) < 0;
         });
 
+        //vou ver agora os numeros totais tirando o que saiu no grupo 1.
         numeros = numeros.filter(function (el) {
             return grupo1.indexOf(el) < 0;
         });
 
+        //enquanto a concatenação dos nao sorteados pares e impares nao tiver o tamanho de 5
+        //vou colocando a lista criada anteriormente
         while (naoSorteadosConcat.length < 5) {
             var numero = numeros[Math.floor(Math.random() * numeros.length)];
             if($.inArray(numero, naoSorteadosConcat) === -1) {
@@ -230,22 +360,22 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         grupo2 = naoSorteadosConcat;
         grupo3 = numeros;
 
-        $scope.jogoHist1 = fixas.concat(grupo1);
-        $scope.jogoHist2 = fixas.concat(grupo2);
-        $scope.jogoHist3 = fixas.concat(grupo3);
-        $scope.jogoHist4 = grupo1.concat(grupo2);
-        $scope.jogoHist4 = $scope.jogoHist4.concat(grupo3);
+        jogoHist.jogoHist1 = fixas.concat(grupo1);
+        jogoHist.jogoHist2 = fixas.concat(grupo2);
+        jogoHist.jogoHist3 = fixas.concat(grupo3);
+        jogoHist.jogoHist4 = grupo1.concat(grupo2);
+        jogoHist.jogoHist4 = jogoHist.jogoHist4.concat(grupo3);
 
-        $scope.jogoHist1.sort(function (a, b) {
+        jogoHist.jogoHist1.sort(function (a, b) {
             return a - b
         });
-        $scope.jogoHist2.sort(function (a, b) {
+        jogoHist.jogoHist2.sort(function (a, b) {
             return a - b
         });
-        $scope.jogoHist3.sort(function (a, b) {
+        jogoHist.jogoHist3.sort(function (a, b) {
             return a - b
         });
-        $scope.jogoHist4.sort(function (a, b) {
+        jogoHist.jogoHist4.sort(function (a, b) {
             return a - b
         });
 
@@ -255,30 +385,37 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         var quantidade4 = 0;
 
         $(ultimoJogo).each(function () {
-            if ($.inArray(Number(this), $scope.jogoHist1) !== -1) {
+            if ($.inArray(Number(this), jogoHist.jogoHist1) !== -1) {
                 quantidade1++;
             }
         });
         $(ultimoJogo).each(function () {
-            if ($.inArray(Number(this), $scope.jogoHist2) !== -1) {
+            if ($.inArray(Number(this), jogoHist.jogoHist2) !== -1) {
                 quantidade2++;
             }
         });
         $(ultimoJogo).each(function () {
-            if ($.inArray(Number(this), $scope.jogoHist3) !== -1) {
+            if ($.inArray(Number(this), jogoHist.jogoHist3) !== -1) {
                 quantidade3++;
             }
         });
         $(ultimoJogo).each(function () {
-            if ($.inArray(Number(this), $scope.jogoHist4) !== -1) {
+            if ($.inArray(Number(this), jogoHist.jogoHist4) !== -1) {
                 quantidade4++;
             }
         });
 
-        console.log(" quantidade1 " + quantidade1);
-        console.log(" quantidade2 " + quantidade2);
-        console.log(" quantidade3 " + quantidade3);
-        console.log(" quantidade4 " + quantidade4);
+        jogoHist.qtdGrupos1 = quantidade1;
+        jogoHist.qtdGrupos2 = quantidade2;
+        jogoHist.qtdGrupos3 = quantidade3;
+        jogoHist.qtdGrupos4 = quantidade4;
+
+        jogoHist.gruposFixas = fixas;
+        jogoHist.gruposGrupo1 = grupo1;
+        jogoHist.gruposGrupo2 = grupo2;
+        jogoHist.gruposGrupo3 = grupo3;
+
+        return jogoHist;
     };
 
     /* import */
