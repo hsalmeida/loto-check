@@ -18,10 +18,23 @@ loto.controller('QuinaCtrl', ['$scope', function ($scope) {
     $scope.dezenas = 5;
     $scope.qtdJogos = 1;
 
+    $scope.jogoSelecionado = {
+        jogo: 1,
+        numeros: []
+    };
+
+    $scope.verQuadrante = function (indice, jogo) {
+        $(".quadrado td").removeClass("marcado");
+        angular.forEach(jogo, function (val, key) {
+            $("#"+val).addClass("marcado");
+        });
+    };
+
     $scope.jogar = function () {
         $scope.jogos = [];
+        waitingDialog.show("Aguarde. Gerando " + $scope.qtdJogos + " jogos.");
         for(var jogos = 0; jogos < $scope.qtdJogos; jogos++) {
-            console.log(jogos);
+
             var lista = [];
             for (var loop = 0; loop < $scope.dezenas; loop++) {
                 var indice = (Math.floor(Math.random() * 10) + 1) - 1;
@@ -39,6 +52,7 @@ loto.controller('QuinaCtrl', ['$scope', function ($scope) {
                 }
             }
             lista.sort(function(a, b){return a-b});
+            waitingDialog.hide();
             $scope.jogos.push(lista);
         }
     };

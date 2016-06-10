@@ -29,6 +29,65 @@ td {
     border-radius: 10rem;
 }
 
+.esquerda-cima {
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+}
+
+.direita-cima {
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+}
+
+.direita-baixo {
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+}
+
+.direita {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+}
+
+.esquerda-baixo {
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+.baixo {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.esquerda {
+    border-width: 0 0 0 1px;
+    border-style: solid;
+}
+
+.cima {
+    border-width: 1px 0 0 0;
+    border-style: solid;
+}
+
+.clickeable:hover {
+    cursor: pointer;
+    color: #000000;
+}
+
+.quadrado td {
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    border-color: #000000;
+}
+
+.marcado {
+    font-weight: bolder;
+    color: #000000;
+}
+
 @viewport {
     width: device-width;
 }
