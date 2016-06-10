@@ -21,6 +21,7 @@ loto.controller('QuinaCtrl', ['$scope', function ($scope) {
     $scope.jogar = function () {
         $scope.jogos = [];
         for(var jogos = 0; jogos < $scope.qtdJogos; jogos++) {
+            console.log(jogos);
             var lista = [];
             for (var loop = 0; loop < $scope.dezenas; loop++) {
                 var indice = (Math.floor(Math.random() * 10) + 1) - 1;
