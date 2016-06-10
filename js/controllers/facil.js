@@ -106,13 +106,21 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         console.log("que os jogos comecem");
         var loop = 0;
         var jogoHist = $scope.simularJogoGrupos();
-        if(jogoHist.qtdGrupos1 > 14 || jogoHist.qtdGrupos2 > 14 || jogoHist.qtdGrupos3 > 14 || jogoHist.qtdGrupos4 > 14) {
+        if(jogoHist.qtdGrupos1 >= 14 || jogoHist.qtdGrupos2 >= 14 || jogoHist.qtdGrupos3 >= 14 || jogoHist.qtdGrupos4 >= 14) {
+            console.log(jogoHist.jogoHist1);
+            console.log(jogoHist.jogoHist2);
+            console.log(jogoHist.jogoHist3);
+            console.log(jogoHist.jogoHist4);
             console.log(loop + " " + jogoHist.qtdGrupos1 + " " + jogoHist.qtdGrupos2 + " " + jogoHist.qtdGrupos3 + " " + jogoHist.qtdGrupos4);
         }
         while(loop < 4000) {
             jogoHist = $scope.simularJogoGrupos();
             loop++;
-            if(jogoHist.qtdGrupos1 > 14 || jogoHist.qtdGrupos2 > 14 || jogoHist.qtdGrupos3 > 14 || jogoHist.qtdGrupos4 > 14) {
+            if(jogoHist.qtdGrupos1 >= 14 || jogoHist.qtdGrupos2 >= 14 || jogoHist.qtdGrupos3 >= 14 || jogoHist.qtdGrupos4 >= 14) {
+                console.log(jogoHist.jogoHist1);
+                console.log(jogoHist.jogoHist2);
+                console.log(jogoHist.jogoHist3);
+                console.log(jogoHist.jogoHist4);
                 console.log(loop + " " + jogoHist.qtdGrupos1 + " " + jogoHist.qtdGrupos2 + " " + jogoHist.qtdGrupos3 + " " + jogoHist.qtdGrupos4);
             }
         }
@@ -194,8 +202,8 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         var grupo2 = [];
         var grupo3 = [];
 
-        var listaBolas = [2, 3, 4, 5, 6, 7, 9, 14, 15, 16, 17, 18, 20, 23, 24  ];
-        var ultimoJogo = [4, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 24, 25 ];
+        var listaBolas = [3, 4, 5, 9, 10, 11, 12, 13, 14, 16, 17, 18, 21, 22, 24 ];
+        var ultimoJogo = [1, 2, 3, 4, 6, 8, 9, 13, 15, 17, 18, 19, 20, 22, 23 ];
 
         for (var a = 0; a < numeros.length; a++) {
             if (listaBolas.indexOf(numeros[a]) === -1) {

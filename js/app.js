@@ -20,5 +20,9 @@ var loto = angular.module('loto', ['ui.router', 'mongolabResourceHttp'])
                 templateUrl: "views/mega.html",
                 controller: 'MegaCtrl'
             })
-    })
-    ;
+            .state('quina', {
+                url: "/quina",
+                templateUrl: "views/quina.html",
+                controller: 'QuinaCtrl'
+            });
+    });

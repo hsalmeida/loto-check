@@ -1,0 +1,30 @@
+<div ng-controller="QuinaCtrl">
+    <ol class="breadcrumb">
+        <li><a ui-sref="home">Home</a></li>
+        <li class="active">Quina</li>
+    </ol>
+    <h3 class="page-header">Quina</h3>
+
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                Dezenas: <input type="number" ng-model="dezenas" placeholder="5" step="1" min="5" max="15">
+                Jogos: <input type="number" ng-model="qtdJogos" placeholder="1" step="1" min="1" max="20">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="jogar()">
+                    Gerar Jogos
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item active">
+                Jogos
+            </div>
+            <div class="list-group-item" ng-repeat="jogo in jogos track by $index">
+                Jogo&nbsp;{{$index + 1}}:&nbsp;<span ng-repeat="numero in jogo track by $index">&nbsp;{{numero}},</span>
+            </div>
+        </div>
+    </div>
+
+</div>
