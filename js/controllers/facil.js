@@ -13,6 +13,8 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
     $scope.predicate = 'concurso';
     $scope.reverse = false;
 
+    $scope.jogoGrupo = "";
+
     $scope.ganhariaJogo1 = 0;
     $scope.ganhariaJogo1_11 = 0;
     $scope.ganhariaJogo1_12 = 0;
@@ -191,6 +193,16 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
 
         //var ultimoJogo = $scope.jogos[($scope.jogos.length - 1)];
         var numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+        var listaBolas = [3, 4, 5, 9, 10, 11, 12, 13, 14, 16, 17, 18, 21, 22, 24 ];
+
+        if($scope.jogoGrupo) {
+            var spJogoGrupo = $scope.jogoGrupo.split(",");
+            for (var q = 0; q < spJogoGrupo.length; q++) {
+                spJogoGrupo[q] = Number(spJogoGrupo[q]);
+            }
+            listaBolas = spJogoGrupo;
+        }
+
         var numerosNaoSorteados = [];
         var naoSorteadosPares = [];
         var naoSorteadosImpares = [];
@@ -202,7 +214,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         var grupo2 = [];
         var grupo3 = [];
 
-        var listaBolas = [3, 4, 5, 9, 10, 11, 12, 13, 14, 16, 17, 18, 21, 22, 24 ];
+
         var ultimoJogo = [1, 2, 3, 4, 6, 8, 9, 13, 15, 17, 18, 19, 20, 22, 23 ];
 
         for (var a = 0; a < numeros.length; a++) {
