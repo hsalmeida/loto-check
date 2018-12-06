@@ -198,6 +198,11 @@ loto.controller('MegaCtrl', ['$scope', 'Mega' , function($scope, Mega){
 
             inicializaMatrizes();
 
+            $scope.tabelaSorteio = {};
+            $scope.tabelaOrdenada = {};
+
+            $scope.tabelaSorteioVencedora = {};
+            $scope.tabelaOrdenadaVencedora = {};
 
             criarTabelaPorSorteio();
             criarTabelaPorOrdem();
