@@ -196,13 +196,13 @@ loto.controller('MegaCtrl', ['$scope', 'Mega' , function($scope, Mega){
             * antes feito com filter no angular ..
             * preciso mudar para usar como desvio*/
 
-            inicializaMatrizes();
-
             $scope.tabelaSorteio = {};
             $scope.tabelaOrdenada = {};
 
             $scope.tabelaSorteioVencedora = {};
             $scope.tabelaOrdenadaVencedora = {};
+            
+            inicializaMatrizes();          
 
             criarTabelaPorSorteio();
             criarTabelaPorOrdem();
