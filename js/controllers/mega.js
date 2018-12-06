@@ -188,7 +188,7 @@ loto.controller('MegaCtrl', ['$scope', 'Mega' , function($scope, Mega){
 
     $scope.getJogos = function(){
         waitingDialog.show();
-        Mega.all({"limit" : 2000}).then(function(jogos){
+        Mega.all({"limit" : 3000}).then(function(jogos){
             $scope.jogos = jogos;
 
             /* criar tabelas
