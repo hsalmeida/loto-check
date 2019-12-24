@@ -1,0 +1,246 @@
+<div ng-controller="FacilCtrl">
+    <ol class="breadcrumb">
+        <li><a ui-sref="home">Home</a></li>
+        <li class="active">Fácil</li>
+    </ol>
+    <h3 class="page-header">Fácil</h3>
+
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                1. baixe o zip aqui:
+                <a href="http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_lotfac.zip"
+                   download="D_lotfac.zip">
+                    D_lotfac.zip
+                </a>
+            </div>
+            <div class="list-group-item">
+                2. faça o upload do arquivo aqui:
+                <input type="file" jogos="jogos" iszip="iszip" fileread="arquivo">
+            </div>
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="simularMenorColisao()">
+                    Gerar Menor Colisão
+                </button>
+                Dezenas: <input type="number" ng-model="dezenas" placeholder="15" step="1" min="15" max="18">
+
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <span ng-repeat="j1 in jogo1 track by $index">&nbsp;{{j1}}</span>
+                        <br/>
+                        ganharia: {{ganhariaJogo1}} jogos de 15
+                        <br/>
+                        ganharia: {{ganhariaJogo1_14}} jogos de 14
+                        <br/>
+                        ganharia: {{ganhariaJogo1_13}} jogos de 13
+                        <br/>
+                        ganharia: {{ganhariaJogo1_12}} jogos de 12
+                        <br/>
+                        ganharia: {{ganhariaJogo1_11}} jogos de 11
+                    </div>
+                    <div class="list-group-item">
+                        <span ng-repeat="j2 in jogo2 track by $index">&nbsp;{{j2}}</span>
+                        <br/>
+                        ganharia: {{ganhariaJogo2}} jogos de 15
+                        <br/>
+                        ganharia: {{ganhariaJogo2_14}} jogos de 14
+                        <br/>
+                        ganharia: {{ganhariaJogo2_13}} jogos de 13
+                        <br/>
+                        ganharia: {{ganhariaJogo2_12}} jogos de 12
+                        <br/>
+                        ganharia: {{ganhariaJogo2_11}} jogos de 11
+                    </div>
+                    <div class="list-group-item">
+                        <span ng-repeat="j3 in jogo3 track by $index">&nbsp;{{j3}}</span>
+                        <br/>
+                        ganharia: {{ganhariaJogo3}} jogos de 15
+                        <br/>
+                        ganharia: {{ganhariaJogo3_14}} jogos de 14
+                        <br/>
+                        ganharia: {{ganhariaJogo3_13}} jogos de 13
+                        <br/>
+                        ganharia: {{ganhariaJogo3_12}} jogos de 12
+                        <br/>
+                        ganharia: {{ganhariaJogo3_11}} jogos de 11
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <label>Jogo para grupos</label>
+                        <input type="text" ng-model="jogoGrupo" class="form-control" placeholder="separe por virgula. exemplo: 1, 2, 5, 6">
+                    </div>
+                    <div class="list-group-item">
+                        <span>Lógica de Grupos</span>
+                        <button type="button" class="btn btn-lg btn-primary" ng-click="simularJogoGruposTela()">
+                            Gerar Logica Grupos
+                        </button>
+                    </div>
+                </div>
+                <!--
+                <button type="button" class="btn btn-lg btn-primary" ng-click="simularCenarios()">
+                    Simular Cenarios
+                </button>
+                -->
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="row">Fixas: <span class="label label-primary label-as-badge grupos"
+                                                      ng-repeat="gf1 in gruposFixas track by $index">&nbsp;{{gf1}}</span>
+                        </div>
+                        <div class="row">Grupo 1: <span class="label label-warning label-as-badge grupos"
+                                                        ng-repeat="gg1 in gruposGrupo1 track by $index">&nbsp;{{gg1}}</span>
+                        </div>
+                        <div class="row">Grupo 2: <span class="label label-success label-as-badge grupos"
+                                                        ng-repeat="gg2 in gruposGrupo2 track by $index">&nbsp;{{gg2}}</span>
+                        </div>
+                        <div class="row">Grupo 3: <span class="label label-info label-as-badge grupos"
+                                                        ng-repeat="gg3 in gruposGrupo3 track by $index">&nbsp;{{gg3}}</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span ng-repeat="jh1 in jogoHist1 track by $index">&nbsp;{{jh1}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span ng-show="qtdGrupos1">{{qtdGrupos1}} acertos - {{proporcao1}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span ng-repeat="jh2 in jogoHist2 track by $index">&nbsp;{{jh2}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span ng-show="qtdGrupos2">{{qtdGrupos2}} acertos - {{proporcao2}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span ng-repeat="jh3 in jogoHist3 track by $index">&nbsp;{{jh3}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span ng-show="qtdGrupos3">{{qtdGrupos3}} acertos - {{proporcao3}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span ng-repeat="jh4 in jogoHist4 track by $index">&nbsp;{{jh4}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span ng-show="qtdGrupos4">{{qtdGrupos4}} acertos - {{proporcao4}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <label>Numeros por posição ordem de sorteio</label>
+            <br/>
+            <input id="ganhadora" type="checkbox" ng-model="ganhadora" ng-click="filterBola()"><label for="ganhadora">Somente
+            ganhadoras</label>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+                </tr>
+                <tr ng-repeat="numero in numeros">
+                    <td>{{numero}}</td>
+                    <td ng-class="{'success' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 50, 'warning' : ( jogos | filter: filterBola(numbola, numero, ganhadora)).length >= 60}"
+                        ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBola(numbola, numero, ganhadora)).length }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="list-group">
+            <div class="list-group-item">
+                <button type="button" class="btn btn-lg btn-primary" ng-click="getJogos()">
+                    Buscar Jogos Salvos
+                </button>
+                <button type="button" ng-show="iszip" class="btn btn-lg btn-primary" ng-click="updateJogo()">
+                    Atualizar do Zip
+                </button>
+                <button type="button" ng-show="jogos.length > 0" class="btn btn-lg btn-primary"
+                        ng-click="gerarCSV()">
+                    Gerar CSV
+                </button>
+            </div>
+        </div>
+        <div class="list-group list-jogos">
+            <div class="list-group-item active">
+                <input type="text" style="color: #FFFFFF;" ng-model="searchtext.concurso"
+                       class="form-control search-bar" placeholder="Buscar pelo concurso"
+                       aria-describedby="basic-addon1">
+            </div>
+            <div class="list-group-item">
+                <label class="control-label">Ordenar por:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline">
+                    <input type="radio" checked name="optradio" ng-click="order('concurso')">Concurso
+                    <span class="sortorder" ng-show="predicate === 'concurso'" ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('ganhadores15')">Ganhadores 15
+                    <span class="sortorder" ng-show="predicate === 'ganhadores15'"
+                          ng-class="{reverse:reverse}"></span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="optradio" ng-click="order('rateio15')">Rateio 15
+                    <span class="sortorder" ng-show="predicate === 'rateio15'" ng-class="{reverse:reverse}"></span>
+                </label>
+            </div>
+            <div class="list-group-item"
+                 ng-repeat="jogo in jogos | filter:searchtext | orderBy:predicate:reverse  ">
+                <h4>concurso: {{jogo.concurso}} - {{jogo.data}}</h4><br/>
+                <label ng-repeat="bola in  jogo.listaBolas">{{bola}}&nbsp;</label>
+                <br/>
+                ganhadores de 15: {{jogo.ganhadores15}} - {{jogo.rateio15 | currency}}<br/>
+                ganhadores de 14: {{jogo.ganhadores14}} - {{jogo.rateio14 | currency}}<br/>
+                ganhadores de 13: {{jogo.ganhadores13}} - {{jogo.rateio13 | currency}}<br/>
+                ganhadores de 12: {{jogo.ganhadores12}} - {{jogo.rateio12 | currency}}<br/>
+                ganhadores de 11: {{jogo.ganhadores11}} - {{jogo.rateio11 | currency}}<br/>
+            </div>
+        </div>
+        <div class="list-group list-jogos">
+            <div class="list-group-item"
+                 ng-repeat="jogoProporcao in jogosProporcao | orderBy:predicate:reverse">
+                <h4>concurso: {{jogoProporcao.concurso}} - {{jogoProporcao.data}}</h4><br/>
+                <label ng-repeat="bola in  jogoProporcao.listaBolas">{{bola}}&nbsp;</label>
+                <br/>
+                pares: {{jogoProporcao.pares}} - impares: {{jogoProporcao.impares}}
+            </div>
+        </div>
+        <!--
+        <label>Numeros por posição ordenados</label>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td></td>
+                <td ng-repeat="numbola in totalBolas">{{numbola}}</td>
+            </tr>
+            <tr ng-repeat="numero in numeros">
+                <td>{{numero}}</td>
+                <td ng-class="{'success' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 50,
+            'warning' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 99,
+            'danger' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 199,
+            'info' : ( jogos | filter: filterBolaOrdenada(numbola, numero, ganhadora)).length >= 299}"
+                    ng-repeat="numbola in totalBolas">{{ ( jogos | filter: filterBolaOrdenada(numbola, numero,
+                    ganhadora)).length }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        -->
+    </div>
+</div>
