@@ -151,18 +151,17 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
         };
         Mega.query(null, q).then(function (ultimamega) {
             $($scope.jogos).each(function () {
-                if (this.concurso > ultimamega[0].concurso) {
-                    var mega = new Mega();
-                    angular.merge(mega, this);
-                    try {
-                        mega.$save().then(function () {
-                            console.log('salvo');
-                        });
-                    } catch (err) {
-                        console.log(err);
-                        return false;
-                    }
+                var mega = new Mega();
+                angular.merge(mega, this);
+                try {
+                    mega.$save().then(function () {
+                        console.log('salvo');
+                    });
+                } catch (err) {
+                    console.log(err);
+                    return false;
                 }
+
             });
             $scope.iszip = false;
             waitingDialog.hide();
@@ -334,7 +333,7 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
         for (var q = 0; q < 12; q++) {
             $scope.probabilidadesHistoricas.push(indices.concat(indices, indices));
         }
-        
+
     }
 
     $scope.simularMenorColisao = function () {
