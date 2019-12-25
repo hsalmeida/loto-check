@@ -479,7 +479,7 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
                                 var indice = zipEntry.name.lastIndexOf('.');
                                 var lenName = zipEntry.name.length;
                                 var extension = zipEntry.name.substring((indice + 1), lenName);
-                                if (extension === 'HTM' || extension === 'HTML') {
+                                if (extension == 'HTM' || extension == 'htm' || extension == 'html' || extension == 'HTML') {
                                     var el = document.createElement('html');
                                     var stringText = zipEntry.asText();
                                     stringText.replace(/ /g, '');

@@ -3,8 +3,9 @@ angular.module('mongolabResourceHttp', [])
 
     function MmongolabResourceFactory(collectionName) {
 
+        //BASE_URL: 'https://api.mlab.com/api/1/databases/'
         var config = angular.extend({
-            BASE_URL: 'https://api.mlab.com/api/1/databases/'
+            BASE_URL: '/api/1/databases/'
         }, MONGOLAB_CONFIG);
 
         var dbUrl = config.BASE_URL + config.DB_NAME;
