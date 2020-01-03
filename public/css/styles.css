@@ -88,6 +88,12 @@ td {
     color: #000000;
 }
 
+.mega-cell td {
+    border-width: 1px;
+    margin: 2px;
+    border-style: solid;
+}
+
 .cartela {
     visibility: hidden;
     background-color: #FFFFFF;
