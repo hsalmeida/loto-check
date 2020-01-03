@@ -122,3 +122,4 @@ angular.module('mongolabResourceHttp', [])
 
     return MmongolabResourceFactory;
 }]);
+    
