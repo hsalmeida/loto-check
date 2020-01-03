@@ -519,7 +519,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
         };
         Facil.query(null, q).then(function (ultimafacil) {
             $($scope.jogos).each(function () {
-                if (this.concurso > ultimafacil[0].concurso) {
+                if(ultimafacil.length === 0 || this.concurso > ultimafacil[0].concurso) {
                     var facil = new Facil();
                     angular.merge(facil, this);
                     try {
@@ -777,7 +777,7 @@ loto.controller('FacilCtrl', ['$scope', 'Facil', function ($scope, Facil) {
                                 var indice = zipEntry.name.lastIndexOf('.');
                                 var lenName = zipEntry.name.length;
                                 var extension = zipEntry.name.substring((indice + 1), lenName);
-                                if (extension === 'HTM' || extension === 'HTML') {
+                                if (extension == 'HTM' || extension == 'htm' || extension == 'html' || extension == 'HTML') {
                                     var el = document.createElement('html');
                                     var stringText = zipEntry.asText();
                                     stringText.replace(/ /g, '');
