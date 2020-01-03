@@ -1,8 +1,38 @@
-loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
+loto.controller('MegaCtrl', ['$scope', 'Mega', '$interval', function ($scope, Mega, $interval) {
 
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+    });
+
+    var ctx = document.getElementById('megaChart');
+
+
+
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1', '2', '3', '4', '5', '6'],
+            datasets: [{
+                label: 'Probabilidade',
+                data: [[1, 14], [4, 27], [13, 38], [22, 48], [33, 57], [46, 60]],
+                backgroundColor: ['rgba(0, 0, 0, 0.1)', 'rgba(0, 0, 0, 0.1)', 'rgba(0, 0, 0, 0.1)', 'rgba(0, 0, 0, 0.1)', 'rgba(0, 0, 0, 0.1)', 'rgba(0, 0, 0, 0.1)']
+            },
+            {
+                label: 'Jogo',
+                data: [],
+                type: 'line'
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
     });
 
     $scope.cellColorSorteio = function (vlr) {
@@ -167,6 +197,57 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
             waitingDialog.hide();
         });
     };
+
+    /* anus animado*/
+    let interval;
+
+    $scope.pararAnos = function () {
+        $interval.cancel(interval);
+    };
+
+    $scope.animarAnos = function () {
+
+        var probabilidades =
+            [
+                { a: 0, b: 14 }, { a: 3, b: 27 }, { a: 13, b: 38 }, { a: 22, b: 48 },
+                { a: 33, b: 57 }, { a: 46, b: 60 }
+            ];
+
+        $scope.animado = {
+            sorteio: 0,
+            data: ""
+        }
+        let sorteios = [];
+        Mega.query({ "concurso": { "$gte": 2200 } }).then(function (jogos) {
+            sorteios = jogos;
+        });
+        let index = 0;
+
+        interval = $interval(() => {
+            let jogo = sorteios[index];
+            if(!jogo) {
+                $scope.pararAnos();
+            }
+            $scope.animado.sorteio = jogo.concurso ? jogo.concurso : 0;
+            $scope.animado.data = jogo.data;
+            index++;
+            myBarChart.data.datasets[1].data = [];
+            $(".quadrado td").removeClass("marcado");
+            jogo.listaBolas.forEach((num, nIndex, nArray) => {
+                let nProb = probabilidades[nIndex];
+                if (num < nProb.a || num > nProb.b) {
+                    myBarChart.data.datasets[0].backgroundColor[nIndex] = 'rgba(255, 0, 0, 0.3)';
+                } else {
+                    myBarChart.data.datasets[0].backgroundColor[nIndex] = 'rgba(0, 0, 0, 0.1)';
+                }
+                $("#" + num).addClass("marcado");
+                myBarChart.data.datasets[1].data.push(num);
+            })
+            myBarChart.update();
+        }, 300);
+    };
+
+    /* */
 
     /* import */
     $scope.import = function () {
@@ -333,7 +414,7 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
         for (var q = 0; q < 12; q++) {
             $scope.probabilidadesHistoricas.push(indices.concat(indices, indices));
         }
-
+        console.log($scope.probabilidadesHistoricas);
     }
 
     $scope.simularMenorColisao = function () {
@@ -440,6 +521,12 @@ loto.controller('MegaCtrl', ['$scope', 'Mega', function ($scope, Mega) {
             jogo1.lista.sort(function (a, b) { return a - b });
 
             $scope.jogosColisao.push(jogo1);
+            myBarChart.data.datasets[1].data = [];
+            jogo1.lista.forEach((num, nIndex, nArray) => {
+                myBarChart.data.datasets[1].data.push(num);
+            })
+
+            myBarChart.update();
         }
 
 
