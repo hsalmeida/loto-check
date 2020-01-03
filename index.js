@@ -11,7 +11,8 @@ const dbusr = process.env.LTDB_USR;
 const dbpasswd = process.env.LTDB_PASSWD;
 const port = process.env.PORT || 80;
 
-const url = `mongodb://${dbusr}:${dbpasswd}@ds053607.mlab.com:53607/ltdb`;
+//const url = `mongodb://${dbusr}:${dbpasswd}@ds053607.mlab.com:53607/ltdb`;
+const url = process.env.ENV == "production" ? `mongodb://${dbusr}:${dbpasswd}@ds053607.mlab.com:53607/ltdb` : `mongodb://127.0.0.1:27017`;
 
 const dbName = 'ltdb';
 let db = null;
@@ -40,6 +41,7 @@ app.get('/', function (req, res) {
 });
 
 // Use connect method to connect to the server
+
 MongoClient.connect(url, function (err, client) {
     if (err) return console.log(err);
     console.log("Connected successfully to server");
@@ -52,10 +54,33 @@ MongoClient.connect(url, function (err, client) {
 
 app.get('/api/1/databases/ltdb/collections/:collection', (req, res) => {
     let collection = req.params.collection
-    db.collection(collection).find().toArray((err, results) => {
+    let query = req.query;
+    let cursor;
+    let fields = {};
+    let criteria = {};
+
+    if (query.f) {
+        fields = JSON.parse(query.f);
+    }
+
+    if (query.q) {
+        criteria = JSON.parse(query.q);
+    }
+
+    cursor = db.collection(collection).find(criteria, fields);
+
+    if (query.s) {
+        cursor = cursor.sort(JSON.parse(query.s));
+    }
+    if (query.l) {
+        cursor.limit(Number(query.l))
+    }
+
+    cursor.toArray((err, results) => {
         if (err) return console.log(err)
         res.json(results);
-    })
+    });
+
 })
 
 app.post('/api/1/databases/ltdb/collections/:collection', (req, res) => {
@@ -72,12 +97,9 @@ app.put('/api/1/databases/ltdb/collections/:collection/:id', (req, res) => {
     let collection = req.params.collection
     let id = req.params.id
     let body = req.body;
-    db.collection(collection).updateOne({_id: ObjectId(id)}, { $set: { body } }, (err, result) => {
+    db.collection(collection).updateOne({ _id: ObjectId(id) }, { $set: { body } }, (err, result) => {
         if (err) return console.log(err)
         console.log('salvo no banco');
         res.send(200).json(result);
     })
 })
-
-
-//https://api.mlab.com/api/1/databases/ltdb/collections/mega?apiKey=YXgR-q92vuVCKlSm-ji3nplDTE7rHIQh&l=3000
