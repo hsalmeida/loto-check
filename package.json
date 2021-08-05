@@ -1,0 +1,29 @@
+{
+  "name": "loto-check",
+  "version": "1.0.0",
+  "description": "loto check for Brazilian lotery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsalmeida/loto-check.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsalmeida/loto-check/issues"
+  },
+  "homepage": "https://github.com/hsalmeida/loto-check#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chart.js": "^2.9.3",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "mongodb": "^3.4.1",
+    "morgan": "^1.9.1"
+  }
+}

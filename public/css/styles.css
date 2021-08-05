@@ -1,0 +1,808 @@
+body {
+    height: 100%;
+}
+
+td {
+    text-align: center;
+}
+
+.sortorder:after {
+    content: '\25b2';
+}
+
+.sortorder.reverse:after {
+    content: '\25bc';
+}
+
+.list-jogos {
+    max-height: 667px;
+    overflow: auto;
+}
+
+.grupos {
+    font-size: 14px;
+}
+
+.label-as-badge {
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 10rem;
+}
+
+.esquerda-cima {
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+}
+
+.direita-cima {
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+}
+
+.direita-baixo {
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+}
+
+.direita {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+}
+
+.esquerda-baixo {
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+.baixo {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+
+.esquerda {
+    border-width: 0 0 0 1px;
+    border-style: solid;
+}
+
+.cima {
+    border-width: 1px 0 0 0;
+    border-style: solid;
+}
+
+.clickeable:hover {
+    cursor: pointer;
+    color: #000000;
+}
+
+.quadrado td {
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    border-color: #000000;
+}
+
+.marcado {
+    font-weight: bolder;
+    color: #000000;
+}
+
+.mega-cell td {
+    border-width: 1px;
+    margin: 2px;
+    border-style: solid;
+}
+
+.cartela {
+    visibility: hidden;
+    background-color: #FFFFFF;
+    width: 82mm;
+    height: 188mm;
+
+}
+
+.matrix-jogo-1 {
+
+    position: relative;
+    top: 72mm;
+    left: 11mm;
+    width: 62mm;
+    height: 25mm;
+}
+
+.matrix-jogo-2 {
+
+    position: relative;
+    top: 81mm;
+    left: 11mm;
+    width: 62mm;
+    height: 25mm;
+}
+
+.quadrado-jogo {
+    width: 4mm;
+    height: 2mm;
+    position: absolute;
+    background-color: black !important;
+}
+
+.matrix-jogo-1-1 {
+    top: 0;
+    left: 0;
+}
+.matrix-jogo-1-2 {
+    top: 0;
+    left: 6mm;
+}
+.matrix-jogo-1-3 {
+    top: 0;
+    left: 12mm;
+}
+.matrix-jogo-1-4 {
+    top: 0;
+    left: 18mm;
+}
+.matrix-jogo-1-5 {
+    top: 0;
+    left: 24mm;
+}
+.matrix-jogo-1-6 {
+    top: 0;
+    left: 30mm;
+}
+.matrix-jogo-1-7 {
+    top: 0;
+    left: 36mm;
+}
+.matrix-jogo-1-8 {
+    top: 0;
+    left: 42mm;
+}
+.matrix-jogo-1-9 {
+    top: 0;
+    left: 48mm;
+}
+.matrix-jogo-1-10 {
+    top: 0;
+    left: 54mm;
+}
+.matrix-jogo-1-11 {
+    top: 3mm;
+    left: 0;
+}
+.matrix-jogo-1-12 {
+    top: 3mm;
+    left: 6mm;
+}
+.matrix-jogo-1-13 {
+    top: 3mm;
+    left: 12mm;
+}
+.matrix-jogo-1-14 {
+    top: 3mm;
+    left: 18mm;
+}
+.matrix-jogo-1-15 {
+    top: 3mm;
+    left: 24mm;
+}
+.matrix-jogo-1-16 {
+    top: 3mm;
+    left: 30mm;
+}
+.matrix-jogo-1-17 {
+    top: 3mm;
+    left: 36mm;
+}
+.matrix-jogo-1-18 {
+    top: 3mm;
+    left: 42mm;
+}
+.matrix-jogo-1-19 {
+    top: 3mm;
+    left: 48mm;
+}
+.matrix-jogo-1-20 {
+    top: 3mm;
+    left: 54mm;
+}
+.matrix-jogo-1-21 {
+    top: 6mm;
+    left: 0;
+}
+.matrix-jogo-1-22 {
+    top: 6mm;
+    left: 6mm;
+}
+.matrix-jogo-1-23 {
+    top: 6mm;
+    left: 12mm;
+}
+.matrix-jogo-1-24 {
+    top: 6mm;
+    left: 18mm;
+}
+.matrix-jogo-1-25 {
+    top: 6mm;
+    left: 24mm;
+}
+.matrix-jogo-1-26 {
+    top: 6mm;
+    left: 30mm;
+}
+.matrix-jogo-1-27 {
+    top: 6mm;
+    left: 36mm;
+}
+.matrix-jogo-1-28 {
+    top: 6mm;
+    left: 42mm;
+}
+.matrix-jogo-1-29 {
+    top: 6mm;
+    left: 48mm;
+}
+.matrix-jogo-1-30 {
+    top: 6mm;
+    left: 54mm;
+}
+.matrix-jogo-1-31 {
+    top: 9mm;
+    left: 0;
+}
+.matrix-jogo-1-32 {
+    top: 9mm;
+    left: 6mm;
+}
+.matrix-jogo-1-33 {
+    top: 9mm;
+    left: 12mm;
+}
+.matrix-jogo-1-34 {
+    top: 9mm;
+    left: 18mm;
+}
+.matrix-jogo-1-35 {
+    top: 9mm;
+    left: 24mm;
+}
+.matrix-jogo-1-36 {
+    top: 9mm;
+    left: 30mm;
+}
+.matrix-jogo-1-37 {
+    top: 9mm;
+    left: 36mm;
+}
+.matrix-jogo-1-38 {
+    top: 9mm;
+    left: 42mm;
+}
+.matrix-jogo-1-39 {
+    top: 9mm;
+    left: 48mm;
+}
+.matrix-jogo-1-40 {
+    top: 9mm;
+    left: 54mm;
+}
+.matrix-jogo-1-41 {
+    top: 12mm;
+    left: 0;
+}
+.matrix-jogo-1-42 {
+    top: 12mm;
+    left: 6mm;
+}
+.matrix-jogo-1-43 {
+    top: 12mm;
+    left: 12mm;
+}
+.matrix-jogo-1-44 {
+    top: 12mm;
+    left: 18mm;
+}
+.matrix-jogo-1-45 {
+    top: 12mm;
+    left: 24mm;
+}
+.matrix-jogo-1-46 {
+    top: 12mm;
+    left: 30mm;
+}
+.matrix-jogo-1-47 {
+    top: 12mm;
+    left: 36mm;
+}
+.matrix-jogo-1-48 {
+    top: 12mm;
+    left: 42mm;
+}
+.matrix-jogo-1-49 {
+    top: 12mm;
+    left: 48mm;
+}
+.matrix-jogo-1-50 {
+    top: 12mm;
+    left: 54mm;
+}
+.matrix-jogo-1-51 {
+    top: 15mm;
+    left: 0;
+}
+.matrix-jogo-1-52 {
+    top: 15mm;
+    left: 6mm;
+}
+.matrix-jogo-1-53 {
+    top: 15mm;
+    left: 12mm;
+}
+.matrix-jogo-1-54 {
+    top: 15mm;
+    left: 18mm;
+}
+.matrix-jogo-1-55 {
+    top: 15mm;
+    left: 24mm;
+}
+.matrix-jogo-1-56 {
+    top: 15mm;
+    left: 30mm;
+}
+.matrix-jogo-1-57 {
+    top: 15mm;
+    left: 36mm;
+}
+.matrix-jogo-1-58 {
+    top: 15mm;
+    left: 42mm;
+}
+.matrix-jogo-1-59 {
+    top: 15mm;
+    left: 48mm;
+}
+.matrix-jogo-1-60 {
+    top: 15mm;
+    left: 54mm;
+}
+.matrix-jogo-1-61 {
+    top: 18mm;
+    left: 0;
+}
+.matrix-jogo-1-62 {
+    top: 18mm;
+    left: 6mm;
+}
+.matrix-jogo-1-63 {
+    top: 18mm;
+    left: 12mm;
+}
+.matrix-jogo-1-64 {
+    top: 18mm;
+    left: 18mm;
+}
+.matrix-jogo-1-65 {
+    top: 18mm;
+    left: 24mm;
+}
+.matrix-jogo-1-66 {
+    top: 18mm;
+    left: 30mm;
+}
+.matrix-jogo-1-67 {
+    top: 18mm;
+    left: 36mm;
+}
+.matrix-jogo-1-68 {
+    top: 18mm;
+    left: 42mm;
+}
+.matrix-jogo-1-69 {
+    top: 18mm;
+    left: 48mm;
+}
+.matrix-jogo-1-70 {
+    top: 18mm;
+    left: 54mm;
+}
+.matrix-jogo-1-71 {
+    top: 21mm;
+    left: 0;
+}
+.matrix-jogo-1-72 {
+    top: 21mm;
+    left: 6mm;
+}
+.matrix-jogo-1-73 {
+    top: 21mm;
+    left: 12mm;
+}
+.matrix-jogo-1-74 {
+    top: 21mm;
+    left: 18mm;
+}
+.matrix-jogo-1-75 {
+    top: 21mm;
+    left: 24mm;
+}
+.matrix-jogo-1-76 {
+    top: 21mm;
+    left: 30mm;
+}
+.matrix-jogo-1-77 {
+    top: 21mm;
+    left: 36mm;
+}
+.matrix-jogo-1-78 {
+    top: 21mm;
+    left: 42mm;
+}
+.matrix-jogo-1-79 {
+    top: 21mm;
+    left: 48mm;
+}
+.matrix-jogo-1-80 {
+    top: 21mm;
+    left: 54mm;
+}
+
+
+.matrix-jogo-2-1 {
+    top: 0;
+    left: 0;
+}
+.matrix-jogo-2-2 {
+    top: 0;
+    left: 6mm;
+}
+.matrix-jogo-2-3 {
+    top: 0;
+    left: 12mm;
+}
+.matrix-jogo-2-4 {
+    top: 0;
+    left: 18mm;
+}
+.matrix-jogo-2-5 {
+    top: 0;
+    left: 24mm;
+}
+.matrix-jogo-2-6 {
+    top: 0;
+    left: 30mm;
+}
+.matrix-jogo-2-7 {
+    top: 0;
+    left: 36mm;
+}
+.matrix-jogo-2-8 {
+    top: 0;
+    left: 42mm;
+}
+.matrix-jogo-2-9 {
+    top: 0;
+    left: 48mm;
+}
+.matrix-jogo-2-10 {
+    top: 0;
+    left: 54mm;
+}
+.matrix-jogo-2-11 {
+    top: 3mm;
+    left: 0;
+}
+.matrix-jogo-2-12 {
+    top: 3mm;
+    left: 6mm;
+}
+.matrix-jogo-2-13 {
+    top: 3mm;
+    left: 12mm;
+}
+.matrix-jogo-2-14 {
+    top: 3mm;
+    left: 18mm;
+}
+.matrix-jogo-2-15 {
+    top: 3mm;
+    left: 24mm;
+}
+.matrix-jogo-2-16 {
+    top: 3mm;
+    left: 30mm;
+}
+.matrix-jogo-2-17 {
+    top: 3mm;
+    left: 36mm;
+}
+.matrix-jogo-2-18 {
+    top: 3mm;
+    left: 42mm;
+}
+.matrix-jogo-2-19 {
+    top: 3mm;
+    left: 48mm;
+}
+.matrix-jogo-2-20 {
+    top: 3mm;
+    left: 54mm;
+}
+.matrix-jogo-2-21 {
+    top: 6mm;
+    left: 0;
+}
+.matrix-jogo-2-22 {
+    top: 6mm;
+    left: 6mm;
+}
+.matrix-jogo-2-23 {
+    top: 6mm;
+    left: 12mm;
+}
+.matrix-jogo-2-24 {
+    top: 6mm;
+    left: 18mm;
+}
+.matrix-jogo-2-25 {
+    top: 6mm;
+    left: 24mm;
+}
+.matrix-jogo-2-26 {
+    top: 6mm;
+    left: 30mm;
+}
+.matrix-jogo-2-27 {
+    top: 6mm;
+    left: 36mm;
+}
+.matrix-jogo-2-28 {
+    top: 6mm;
+    left: 42mm;
+}
+.matrix-jogo-2-29 {
+    top: 6mm;
+    left: 48mm;
+}
+.matrix-jogo-2-30 {
+    top: 6mm;
+    left: 54mm;
+}
+.matrix-jogo-2-31 {
+    top: 9mm;
+    left: 0;
+}
+.matrix-jogo-2-32 {
+    top: 9mm;
+    left: 6mm;
+}
+.matrix-jogo-2-33 {
+    top: 9mm;
+    left: 12mm;
+}
+.matrix-jogo-2-34 {
+    top: 9mm;
+    left: 18mm;
+}
+.matrix-jogo-2-35 {
+    top: 9mm;
+    left: 24mm;
+}
+.matrix-jogo-2-36 {
+    top: 9mm;
+    left: 30mm;
+}
+.matrix-jogo-2-37 {
+    top: 9mm;
+    left: 36mm;
+}
+.matrix-jogo-2-38 {
+    top: 9mm;
+    left: 42mm;
+}
+.matrix-jogo-2-39 {
+    top: 9mm;
+    left: 48mm;
+}
+.matrix-jogo-2-40 {
+    top: 9mm;
+    left: 54mm;
+}
+.matrix-jogo-2-41 {
+    top: 12mm;
+    left: 0;
+}
+.matrix-jogo-2-42 {
+    top: 12mm;
+    left: 6mm;
+}
+.matrix-jogo-2-43 {
+    top: 12mm;
+    left: 12mm;
+}
+.matrix-jogo-2-44 {
+    top: 12mm;
+    left: 18mm;
+}
+.matrix-jogo-2-45 {
+    top: 12mm;
+    left: 24mm;
+}
+.matrix-jogo-2-46 {
+    top: 12mm;
+    left: 30mm;
+}
+.matrix-jogo-2-47 {
+    top: 12mm;
+    left: 36mm;
+}
+.matrix-jogo-2-48 {
+    top: 12mm;
+    left: 42mm;
+}
+.matrix-jogo-2-49 {
+    top: 12mm;
+    left: 48mm;
+}
+.matrix-jogo-2-50 {
+    top: 12mm;
+    left: 54mm;
+}
+.matrix-jogo-2-51 {
+    top: 15mm;
+    left: 0;
+}
+.matrix-jogo-2-52 {
+    top: 15mm;
+    left: 6mm;
+}
+.matrix-jogo-2-53 {
+    top: 15mm;
+    left: 12mm;
+}
+.matrix-jogo-2-54 {
+    top: 15mm;
+    left: 18mm;
+}
+.matrix-jogo-2-55 {
+    top: 15mm;
+    left: 24mm;
+}
+.matrix-jogo-2-56 {
+    top: 15mm;
+    left: 30mm;
+}
+.matrix-jogo-2-57 {
+    top: 15mm;
+    left: 36mm;
+}
+.matrix-jogo-2-58 {
+    top: 15mm;
+    left: 42mm;
+}
+.matrix-jogo-2-59 {
+    top: 15mm;
+    left: 48mm;
+}
+.matrix-jogo-2-60 {
+    top: 15mm;
+    left: 54mm;
+}
+.matrix-jogo-2-61 {
+    top: 18mm;
+    left: 0;
+}
+.matrix-jogo-2-62 {
+    top: 18mm;
+    left: 6mm;
+}
+.matrix-jogo-2-63 {
+    top: 18mm;
+    left: 12mm;
+}
+.matrix-jogo-2-64 {
+    top: 18mm;
+    left: 18mm;
+}
+.matrix-jogo-2-65 {
+    top: 18mm;
+    left: 24mm;
+}
+.matrix-jogo-2-66 {
+    top: 18mm;
+    left: 30mm;
+}
+.matrix-jogo-2-67 {
+    top: 18mm;
+    left: 36mm;
+}
+.matrix-jogo-2-68 {
+    top: 18mm;
+    left: 42mm;
+}
+.matrix-jogo-2-69 {
+    top: 18mm;
+    left: 48mm;
+}
+.matrix-jogo-2-70 {
+    top: 18mm;
+    left: 54mm;
+}
+.matrix-jogo-2-71 {
+    top: 21mm;
+    left: 0;
+}
+.matrix-jogo-2-72 {
+    top: 21mm;
+    left: 6mm;
+}
+.matrix-jogo-2-73 {
+    top: 21mm;
+    left: 12mm;
+}
+.matrix-jogo-2-74 {
+    top: 21mm;
+    left: 18mm;
+}
+.matrix-jogo-2-75 {
+    top: 21mm;
+    left: 24mm;
+}
+.matrix-jogo-2-76 {
+    top: 21mm;
+    left: 30mm;
+}
+.matrix-jogo-2-77 {
+    top: 21mm;
+    left: 36mm;
+}
+.matrix-jogo-2-78 {
+    top: 21mm;
+    left: 42mm;
+}
+.matrix-jogo-2-79 {
+    top: 21mm;
+    left: 48mm;
+}
+.matrix-jogo-2-80 {
+    top: 21mm;
+    left: 54mm;
+}
+
+@viewport {
+    width: device-width;
+}
+
+#section-to-print, #section-to-print * {
+    visibility: hidden;
+}
+
+@media print {
+    @page {
+        size: 82mm 188mm;
+        margin: 0;
+    }
+    body * {
+        visibility: hidden;
+    }
+    #section-to-print, #section-to-print * {
+        visibility: visible;
+
+    }
+    #section-to-print {
+
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .cartela {
+        visibility: visible;
+        background-color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        width: 82mm;
+        height: 188mm;
+        page-break-before: always;
+    }
+}
